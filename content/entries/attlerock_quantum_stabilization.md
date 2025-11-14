@@ -6,27 +6,23 @@
 
 **RESEARCHER RIVIK**: "Discovery log, day 47. Forty-seven fucking days. I've finally figured it out!"
 
-"These quantum inscriptions... The ones that flicker and phase in and out of existence? They're not broken or corrupted. They're in quantum superposition!"
+"Quantum inscription encryption! Text that exists in superposition, flickering between multiple states. Anyone observing it sees it collapse into ONE state, but it might not be the readable one!"
 
 *[Excited rustling of equipment]*
 
-"The text exists in multiple states simultaneously! Every time you observe it, the waveform collapses into ONE state—but it might not be the readable state."
+"The brilliance is this: quantum objects change when you STOP observing them. Turn off the lights, close your eyes, and the text shifts to a different state. Open your eyes again and you're seeing a new configuration."
 
-"Here's the key: quantum objects change when you STOP observing them. When you turn off the lights o-or close your eyes, the text shifts to a different state. When you open your eyes again, you're observing a new configuration."
+"Here's how someone would decrypt it: they'd need patience to cycle through states until they observe the encryption key symbol!"
 
 *[Sound of quantum text shifting]*
 
-"So the technique is simple but requires patience: shift in between states until, eventually, you'll observe it with the encryption key symbol!"
+"Each quantum state displays a unique symbol. ⟁, ⧈, ◊, ∞, ◈... But only ONE symbol is the encryption key."
 
-*[Pause]*
+*[Pause to breath]*
 
-"Each quantum state has a unique symbol. ⟁, ⧈, ◊, ∞, ◈... But only ONE symbol acts as the encryption key."
+"I'm using ⟐ as the key. Anyone who knows what to look for can decrypt it, but casual observers just see flickering nonsense."
 
-"It's ⟐. That's the symbol you're looking for."
-
-*[Sound of successful observation]*
-
-"This changes everything. There are quantum texts scattered across the solar system, probably containing advanced knowledge we've been unable to access. Now we can read them all!!!! HAHAHAHAHAHAHA"
+"This changes everything! We can hide advanced knowledge throughout the solar system. Protected, but accessible to those who understand quantum mechanics. Now we can safeguard our most important discoveries!!!! HAHAHAHAHAHAHA"
 
 *[Log ends]*
 

@@ -22,13 +22,22 @@ class LoopManager:
         self.loop_count = 1
         self.is_first_loop = True
         self.minutes_per_action = 1  # Each action costs 1 minute
+        self.cavern_has_collapsed = False  # Track quantum cavern collapse
 
-    def increment_action(self, action_cost: int = 1) -> bool:
+    def increment_action(self, action_cost: int = 1):
         """
         Increment action counter by specified cost.
-        Returns True if supernova should trigger, False otherwise.
+        Returns:
+        - "quantum_cavern_collapse" if cavern collapses (action 14)
+        - "supernova" if supernova triggers (action 22+)
+        - False otherwise
         """
         self.current_actions += action_cost
+
+        # Check for quantum cavern collapse at action 14
+        if self.current_actions == 14 and not self.cavern_has_collapsed:
+            self.cavern_has_collapsed = True
+            return "quantum_cavern_collapse"
 
         # Show warning at 18/22 actions
         warning_threshold = self.actions_until_supernova - 4
@@ -37,7 +46,7 @@ class LoopManager:
 
         # Check for supernova
         if self.current_actions >= self.actions_until_supernova:
-            return True
+            return "supernova"
 
         return False
 
@@ -121,8 +130,9 @@ class LoopManager:
         else:
             self._standard_supernova_sequence()
 
-        # Reset action counter
+        # Reset action counter and collapse state
         self.current_actions = 0
+        self.cavern_has_collapsed = False
 
         # Increment loop counter
         self.loop_count += 1

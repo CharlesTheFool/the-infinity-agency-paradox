@@ -4,7 +4,7 @@
 
 ---
 
-**RESEARCHER MALLOW**: "Log 2847. Late afternoon probably. I've been cross-referencing orbital data with the Nomai texts, and I found something weird."
+**HORNFELDS**: "Log 2847. Late afternoon probably. I've been cross-referencing orbital data with the Nomai texts, and I found something weird."
 
 *[Sound of text scrolling]:* "This recording device is still a piece of shit, by the way."*
 
@@ -22,23 +22,9 @@
 
 "Anyway, I'm logging this because if anyone figures out how to perceive it—actually see through the quantum interference—it'll be huge. Might rewrite everything we think we know about observation and reality."
 
-*[Background]: "MALLOW GET OFF THE DAMN RECORDER"*
+*[Background]: "HORNFELDS GET OFF THE DAMN RECORDER"*
 
 "Yeah, yeah, I'm coming!"
-
----
-
-**DISCOVERY LOGGED: THE SIXTH LOCATION**
-
-*The Nomai theorized a quantum object in superposition across six orbital states. Observable only through specific techniques.*
-
----
-
-You stare at the notes scattered across the console. Orbital diagrams. Quantum wave equations. References to a grove, a traveler, a final location.
-
-Somewhere out there, something shifts between possibilities.
-
-Waiting to be observed.
 
 ---
 

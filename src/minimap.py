@@ -16,10 +16,11 @@ from src.map_layouts import MapLayout
 class MiniMap:
     """Renders mini-map HUD showing POI layout and progress"""
 
-    def __init__(self, console: Console, poi_system, knowledge_menu):
+    def __init__(self, console: Console, poi_system, knowledge_menu, loop_manager):
         self.console = console
         self.poi_system = poi_system
         self.knowledge_menu = knowledge_menu
+        self.loop_manager = loop_manager
 
     def render(self) -> None:
         """Main render method - switches between views based on state"""
@@ -48,7 +49,8 @@ class MiniMap:
         layout_generator = MapLayout(
             self.poi_system.location_data,
             self.poi_system,
-            self.knowledge_menu
+            self.knowledge_menu,
+            self.loop_manager
         )
 
         spatial_map = layout_generator.generate_spatial_map(location_id)

@@ -56,14 +56,19 @@ class OuterWildsOrchestrator:
         self.npc_system.content_loader = self.content_loader
 
         # Initialize mini-map system
-        self.minimap = MiniMap(self.console, self.poi_system, self.knowledge_menu)
+        self.minimap = MiniMap(self.console, self.poi_system, self.knowledge_menu, self.loop_manager)
 
         # Track intro and tutorial completion for UI flow
         self.intro_complete = False
         self.observatory_tutorial_shown = False
 
-        # Track quantum moon frequency entry (resets each loop)
+        # Track physical actions that reset each loop
         self.quantum_frequency_entered = False
+        self.launch_code_entered = False
+
+        # Track eye closing state for two-stage mechanics
+        self.eyes_closed = False
+        self.eyes_closed_at_location = None  # Track where eyes were closed (convergence/grove)
 
     def _load_location_data(self) -> dict:
         """Load location configuration"""
@@ -123,21 +128,51 @@ class OuterWildsOrchestrator:
             at_grove = (self.poi_system.current_location == "quantum_moon" and
                        self.poi_system.current_poi == "grove")
 
-            if costs_action and not at_grove and self.loop_manager.increment_action(1):
-                # Supernova triggered AFTER action completes
-                self.loop_manager.trigger_supernova(self.knowledge_menu)
-                # Reset POI system to starting position
-                self.poi_system.current_location = "timber_hearth"
-                self.poi_system.in_ship = False
-                self.poi_system.ship_flying = False
-                self.poi_system._initialize_starting_position()
-                # Reset quantum frequency (must re-enter each loop)
-                self.quantum_frequency_entered = False
-                continue
+            if costs_action and not at_grove:
+                result = self.loop_manager.increment_action(1)
+
+                # Handle quantum cavern collapse
+                if result == "quantum_cavern_collapse":
+                    self._handle_cavern_collapse()
+                    continue
+
+                # Handle supernova
+                if result == "supernova":
+                    self.loop_manager.trigger_supernova(self.knowledge_menu)
+                    # Reset POI system to starting position
+                    self.poi_system.current_location = "timber_hearth"
+                    self.poi_system.in_ship = False
+                    self.poi_system.ship_flying = False
+                    self.poi_system._initialize_starting_position()
+
+                    # Reset quantum navigator (in case player was on quantum moon)
+                    self.quantum_navigator.reset_navigation()
+
+                    # Reset physical actions (must repeat each loop)
+                    self.quantum_frequency_entered = False
+                    self.launch_code_entered = False
+
+                    # Reset eye state
+                    self.eyes_closed = False
+                    self.eyes_closed_at_location = None
+
+                    # Clear temporary same-loop knowledge flags
+                    if "cavern_collapse_witnessed" in self.knowledge_menu.progress.knowledge_gained:
+                        self.knowledge_menu.progress.knowledge_gained.remove("cavern_collapse_witnessed")
+
+                    continue
 
     def _show_current_scene(self):
         """Display current POI"""
         self.visualizer.clear_screen()
+
+        # If eyes are closed, show darkness scene instead
+        if self.eyes_closed:
+            self.console.print("\n" + "━" * 60 + "\n", style="dim")
+            self.console.print("DARKNESS\n", style="bold dim")
+            self.console.print("━" * 60 + "\n\n", style="dim")
+            self.console.print("The universe holds its breath.\n\n", style="dim italic")
+            return  # Skip normal rendering
 
         # Render mini-map HUD (hidden at grove - immersive ending space)
         at_grove = (self.poi_system.current_location == "quantum_moon" and
@@ -159,10 +194,30 @@ class OuterWildsOrchestrator:
             self.quantum_navigator.show_navigation_scene()
         else:
             # Show normal POI scene
-            self.poi_system.show_current_scene(self.knowledge_menu, self.quantum_frequency_entered)
+            self.poi_system.show_current_scene(self.knowledge_menu, self.quantum_frequency_entered, self.launch_code_entered)
 
     def _get_command(self):
         """Get command from user via arrow key menu"""
+        # If eyes are closed, only show "Open Eyes" option
+        if self.eyes_closed:
+            menu_actions = [
+                "Open Eyes",
+                "───────────────────",
+                "• Help"
+            ]
+            choice = self.interactions.get_menu_choice(menu_actions, title="▸ ACTIONS", show_back=False)
+
+            if choice is None:
+                return "cancel"
+
+            selected_action = menu_actions[choice]
+
+            # Handle separator selection
+            if selected_action.startswith("───"):
+                return "cancel"
+
+            return selected_action
+
         # Check if we're at Quantum Moon surface and need cardinal navigation
         at_quantum_surface = (
             self.poi_system.current_location == "quantum_moon" and
@@ -181,7 +236,7 @@ class OuterWildsOrchestrator:
                 contextual_actions.append("Enter Ship")
         else:
             # Normal POI navigation
-            contextual_actions = self.poi_system.get_contextual_actions(self.knowledge_menu, self.quantum_frequency_entered, self.npc_system, self.quantum_system)
+            contextual_actions = self.poi_system.get_contextual_actions(self.knowledge_menu, self.quantum_frequency_entered, self.launch_code_entered, self.npc_system, self.quantum_system, self.loop_manager.cavern_has_collapsed)
 
         # Build complete menu with contextual + persistent actions
         menu_actions = []
@@ -248,6 +303,14 @@ class OuterWildsOrchestrator:
 
         return text.strip()
 
+    def _strip_articles(self, name: str) -> str:
+        """Remove articles (the, your, a, an) from location names for ID conversion"""
+        name_lower = name.lower()
+        for article in ["the ", "your ", "a ", "an "]:
+            if name_lower.startswith(article):
+                return name[len(article):]
+        return name
+
     def _process_command(self, command: str) -> bool:
         """
         Process user command from menu selection.
@@ -289,6 +352,7 @@ class OuterWildsOrchestrator:
             # In space, visiting a location
             location_name_raw = command_clean.split("Visit ")[1].strip() if "Visit" in command_clean else ""
             location_name = self._strip_ui_labels(location_name_raw)
+            location_name = self._strip_articles(location_name)
             if location_name:
                 self._land_at_location(location_name.lower().replace(" ", "_"))
             return True
@@ -314,20 +378,91 @@ class OuterWildsOrchestrator:
         elif ("close eyes" in command_lower and
               self.poi_system.current_location == "quantum_moon" and
               self.poi_system.current_poi == "surface"):
-            success, message, reached_grove = self.quantum_navigator.close_eyes_reset()
-            if reached_grove:
+            # Two-stage eye closing: close → darkness → open → transition
+            # Check if at convergence (ready for grove)
+            at_convergence = self.quantum_navigator.current_location == "convergence"
+
+            if at_convergence:
+                # At convergence: closing eyes enters darkness state (FREE - opening costs the action)
+                self.eyes_closed = True
+                self.eyes_closed_at_location = "convergence"
+                self.console.print("\n[dim cyan]You close your eyes...[/dim cyan]\n")
+                time.sleep(1)
+                return False  # FREE - closing is just preparation
+            else:
+                # Not at convergence: reset to platform as before (COSTS ACTION - immediate teleport)
+                success, message, reached_grove = self.quantum_navigator.close_eyes_reset()
+                self.console.print(f"\n[cyan]{message}[/cyan]\n")
+                time.sleep(0.5)
+                return True  # COSTS ACTION - immediate reset/teleport
+
+        # Open eyes - handle transitions based on where eyes were closed
+        elif "open eyes" in command_lower and self.eyes_closed:
+            if self.eyes_closed_at_location == "convergence":
+                # Opening eyes at convergence → reach the grove!
+                self.console.print("\n[cyan]You open your eyes and see: the weathered stone platform where you began— "
+                                 "and beyond it, impossible but certain, a grove of quantum trees that exists "
+                                 "only because you walked this path.[/cyan]\n")
+                time.sleep(2)
+
+                # Show grove arrival sequence
+                self.console.print("\n" + "━" * 60 + "\n", style="bold magenta")
+                self.console.print("THE QUANTUM WAVEFORM STABILIZES\n", style="bold magenta")
+                self.console.print("You step through into impossible space...\n\n", style="cyan")
+                time.sleep(2)
+
+                self.console.print("A grove materializes around you. Quantum trees shimmer with light", style="white")
+                self.console.print("that shouldn't exist. At the center, a figure waits patiently.\n", style="white")
+                time.sleep(2)
+
+                self.console.print("Solanum turns toward you, existing and not existing,", style="dim italic")
+                self.console.print("quantum superposition made manifest.\n", style="dim italic")
+                time.sleep(2)
+
+                self.console.print("\n" + "━" * 60 + "\n", style="bold magenta")
+
                 # Grant navigation complete knowledge
-                self.knowledge_menu.progress.grant_knowledge("grove_navigation_complete")
+                self.knowledge_menu.add_knowledge("grove_navigation_complete")
+
                 # Move player to grove POI
                 self.poi_system.current_poi = "grove"
                 self.poi_system._discover_poi("quantum_moon", "grove")
                 full_poi_id = "quantum_moon.grove"
                 self.poi_system.visited_pois.add(full_poi_id)
+
+                # Update quantum navigator state
+                self.quantum_navigator.current_location = "grove"
+
+                # Reset eye state
+                self.eyes_closed = False
+                self.eyes_closed_at_location = None
+
+                # Exit ship when arriving at grove via quantum navigation
+                self.poi_system.in_ship = False
+
                 self.console.print("\n[bold magenta]You've successfully navigated to the grove![/bold magenta]\n")
                 time.sleep(1)
-            else:
-                self.console.print(f"\n[cyan]{message}[/cyan]\n")
-            return True
+
+            elif self.eyes_closed_at_location == "grove":
+                # Opening eyes at grove → return to quantum moon surface
+                self.console.print("\n[cyan]You open your eyes...[/cyan]\n")
+                time.sleep(1)
+                self.console.print("[dim]The grove fades. Quantum superposition collapses.[/dim]\n")
+                time.sleep(1)
+                self.console.print("[white]You're back at the weathered stone platform on the Quantum Moon's surface.[/white]\n")
+                time.sleep(1)
+
+                # Move player back to surface
+                self.poi_system.current_poi = "surface"
+
+                # Reset quantum navigator to platform
+                self.quantum_navigator.reset_navigation()
+
+                # Reset eye state
+                self.eyes_closed = False
+                self.eyes_closed_at_location = None
+
+            return True  # COSTS ACTION
 
         # Ship commands
         elif "enter ship" in command_lower:
@@ -361,6 +496,26 @@ class OuterWildsOrchestrator:
             # Opening menu is FREE, but reading an entry costs action
             entry_was_read = self._handle_examine()
             return entry_was_read
+
+        # Close eyes at grove - return to quantum moon surface (conditional)
+        elif ("close eyes" in command_lower and
+              self.poi_system.current_location == "quantum_moon" and
+              self.poi_system.current_poi == "grove"):
+            # Player at grove closing eyes to return to surface
+            # Only allowed if they can't end the game yet
+            if not self.knowledge_menu.has_knowledge("complete_understanding"):
+                self.eyes_closed = True
+                self.eyes_closed_at_location = "grove"
+                self.console.print("\n[dim cyan]You close your eyes...[/dim cyan]\n")
+                time.sleep(1)
+                return False  # FREE - closing is just preparation, opening costs the action
+            else:
+                # Player can end the game - Solanum reminds them
+                self.console.print("\n[dim magenta]Solanum's voice reaches you across quantum states:[/dim magenta]\n")
+                self.console.print("[magenta]'You've come so far. There is nothing left to find.'[/magenta]\n")
+                self.console.print("[magenta]'When you're ready, witness the end.'[/magenta]\n")
+                time.sleep(1)
+                return False  # FREE action (cancelled)
 
         # Quantum observation (free) - unified atomic action
         elif "close eyes" in command_lower or "close eye" in command_lower:
@@ -413,7 +568,9 @@ class OuterWildsOrchestrator:
         if success:
             self.console.print(f"\n[cyan]{message}[/cyan]\n")
             time.sleep(0.5)
-            # Cost already applied in action counter
+
+            # Movement costs 2 actions total (1 from this call + 1 from return True)
+            self.loop_manager.increment_action(1)
 
             # Trigger Observatory tutorial if first visit
             if (self.poi_system.current_poi == "observatory" and
@@ -428,7 +585,7 @@ class OuterWildsOrchestrator:
 
         if reached_grove:
             # Grant navigation complete knowledge
-            self.knowledge_menu.progress.grant_knowledge("grove_navigation_complete")
+            self.knowledge_menu.add_knowledge("grove_navigation_complete")
 
             # Move player to grove POI
             self.poi_system.current_poi = "grove"
@@ -500,6 +657,9 @@ class OuterWildsOrchestrator:
             self.console.print(f"\n[bold cyan]{message}[/bold cyan]\n")
             time.sleep(0.5)
 
+            # Launch costs 2 actions total (1 from command return, 1 added here)
+            self.loop_manager.increment_action(1)
+
             # Build menu of destinations (including current location)
             destinations = []
             destination_ids = []
@@ -518,6 +678,9 @@ class OuterWildsOrchestrator:
                         destinations.append(f"{emoji} {name}")
 
                     destination_ids.append(loc_id)
+
+            # Filter out any empty or malformed entries
+            destinations = [d for d in destinations if d and d.strip()]
 
             # Show navigation menu only if destinations exist
             if not destinations:
@@ -554,11 +717,17 @@ class OuterWildsOrchestrator:
     def _land_at_location(self, location_id: str):
         """Land at a specific location"""
         # Attempt landing
-        success, cost, message = self.poi_system.land_at_location(location_id, self.knowledge_menu)
+        success, cost, message = self.poi_system.land_at_location(location_id, self.knowledge_menu, self.quantum_frequency_entered)
 
         if success:
+            # If landing at quantum moon, reset quantum navigator to initial state
+            if location_id == "quantum_moon":
+                self.quantum_navigator.reset_navigation()
+
             self.console.print(f"\n[bold cyan]{message}[/bold cyan]\n")
             time.sleep(0.5)
+            # Apply landing cost (travel + landing time)
+            self.loop_manager.increment_action(cost)
         else:
             self.console.print(f"\n[red]{message}[/red]\n")
             time.sleep(0.3)
@@ -568,9 +737,66 @@ class OuterWildsOrchestrator:
         # This is already handled by POI system's show_current_scene
         pass
 
+    def _handle_cavern_collapse(self):
+        """Handle quantum cavern collapse into black hole at action 14"""
+        current_loc = self.poi_system.current_location
+        current_poi = self.poi_system.current_poi
+
+        # Case 1: Player is IN quantum cavern - DEATH
+        if current_loc == "brittle_hollow" and current_poi == "quantum_cavern":
+            self.console.print("\n[bold red]━━━ GRAVITATIONAL COLLAPSE ━━━[/bold red]\n")
+            time.sleep(0.5)
+            self.console.print("[red]The chunk of Brittle Hollow beneath you breaks away.[/red]")
+            time.sleep(1)
+            self.console.print("[red]You fall into the black hole's event horizon.[/red]")
+            time.sleep(1)
+            self.console.print("[dim red]Everything stretches... then nothing.[/dim red]\n")
+            time.sleep(2)
+
+            # Trigger loop reset (death instead of supernova)
+            self.console.print("[bold yellow]━━━ TIME RESETS ━━━[/bold yellow]\n")
+            time.sleep(1)
+            self.knowledge_menu.increment_loop()
+
+            # Reset physical state
+            self.poi_system.current_location = "timber_hearth"
+            self.poi_system.in_ship = False
+            self.poi_system.ship_flying = False
+            self.poi_system._initialize_starting_position()
+            self.quantum_frequency_entered = False
+            self.launch_code_entered = False
+            self.loop_manager.current_actions = 0
+            self.loop_manager.cavern_has_collapsed = False
+            self.loop_manager.loop_count += 1
+
+            # Reset eye state
+            self.eyes_closed = False
+            self.eyes_closed_at_location = None
+
+            # Clear temporary same-loop knowledge flags
+            if "cavern_collapse_witnessed" in self.knowledge_menu.progress.knowledge_gained:
+                self.knowledge_menu.progress.knowledge_gained.remove("cavern_collapse_witnessed")
+
+        # Case 2: Player is at Brittle Hollow (other POI) - CUTSCENE
+        elif current_loc == "brittle_hollow":
+            self.console.print("\n[bold yellow]━━━ PLANETARY COLLAPSE ━━━[/bold yellow]\n")
+            time.sleep(0.5)
+            self.console.print("[yellow]The ground shakes violently. You watch as the quantum cavern "
+                             "chunk breaks away from the planet and spirals into the black hole "
+                             "below. It's gone.[/yellow]\n")
+            time.sleep(2)
+            self.console.print("[dim]Maybe earlier next time?[/dim]\n")
+            time.sleep(1.5)
+
+            # Grant temporary knowledge flag for this loop (enables Riebeck dialogue)
+            self.knowledge_menu.add_knowledge("cavern_collapse_witnessed")
+
+        # Case 3: Player elsewhere - no immediate message
+        # (They'll discover collapse when they try to access later)
+
     def _handle_enter_launch_code(self):
         """Interactive launch code entry"""
-        if self.poi_system.in_ship and not self.knowledge_menu.has_knowledge("ship_operation"):
+        if self.poi_system.in_ship and not self.launch_code_entered:
             self.console.print("\n[bold]SHIP CONSOLE[/bold]")
             self.console.print("Enter launch code: ", end="")
             code = input().strip().upper()
@@ -584,14 +810,19 @@ class OuterWildsOrchestrator:
                 self.console.print("[cyan]║  LAUNCH AUTHORIZATION: OK   ║[/cyan]")
                 self.console.print("[cyan]╚══════════════════════════════╝[/cyan]\n")
                 self.console.print("[white]The ship hums to life. You can now launch into space.[/white]\n")
+                # Grant epistemic knowledge (understanding the code)
+                self.knowledge_menu.add_knowledge("launch_code_epistemic")
+                # Also grant ship operation capability (enables navigation to other locations)
                 self.knowledge_menu.add_knowledge("ship_operation")
+                # Set physical state (code entered this loop)
+                self.launch_code_entered = True
                 time.sleep(2.5)
             else:
                 self.console.print(f"\n[red]✗ Nothing happens. That's not it.[/red]")
                 self.console.print("[dim]The launch code can be found somewhere on Timber Hearth...[/dim]\n")
                 time.sleep(0.3)
         else:
-            self.console.print("\n[dim]The ship is already awake. Or you're not inside yet.[/dim]\n")
+            self.console.print("\n[dim]The ship is already activated. Or you're not inside yet.[/dim]\n")
             time.sleep(0.3)
 
     def _handle_insert_frequency(self):

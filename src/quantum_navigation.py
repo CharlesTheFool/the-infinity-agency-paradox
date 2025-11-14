@@ -163,7 +163,9 @@ class QuantumNavigator:
             # Quantum randomization - teleport to random location
             # Possible destinations: platform, crystals, tree, arch (excluding current and convergence)
             possible_locations = ["platform", "crystals", "tree", "arch"]
-            possible_locations.remove(self.current_location)  # Can't stay at current
+            # Only remove current location if it's actually in the list (defensive check)
+            if self.current_location in possible_locations:
+                possible_locations.remove(self.current_location)  # Can't stay at current
 
             random_location = random.choice(possible_locations)
             self.current_location = random_location

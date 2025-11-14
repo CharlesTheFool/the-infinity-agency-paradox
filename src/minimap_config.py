@@ -13,6 +13,7 @@ ICON_COMPLETED = "x"        # All entries found
 ICON_VISITED = "."          # Been here, nothing left
 ICON_UNKNOWN = "?"          # Unknown/undiscovered
 ICON_LOCKED_POI = "⚠"       # POI requires knowledge to access
+ICON_COLLAPSED = "◌"        # POI collapsed (fallen into black hole)
 ICON_CONNECTION = "|"       # Vertical connection line
 
 # === Trail/Path Connectors ===
@@ -32,6 +33,7 @@ COLOR_CURRENT = "yellow"
 COLOR_VISITED = "green"
 COLOR_UNVISITED = "dim white"
 COLOR_LOCKED = "red"
+COLOR_COLLAPSED = "dim red"
 COLOR_PARTIAL = "cyan"
 COLOR_COMPLETE = "bright_green"
 COLOR_HEADER = "bold bright_white"
@@ -51,6 +53,7 @@ SHOW_ENTRY_COUNT = True
 # Order matters - first matching state shows its icon
 POI_STATE_PRIORITY = [
     "current",      # Player is here
+    "collapsed",    # POI collapsed into black hole
     "ship",         # Ship is here
     "completed",    # All entries discovered
     "has_npc",      # NPC present

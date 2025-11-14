@@ -180,7 +180,7 @@ class POISystem:
         self.ship_flying = True
         return True, "The ship lifts off into space..."
 
-    def land_at_location(self, location_id: str, knowledge_menu) -> Tuple[bool, int, str]:
+    def land_at_location(self, location_id: str, knowledge_menu, frequency_entered=False) -> Tuple[bool, int, str]:
         """
         Land ship at a new location.
         Returns (success, action_cost, message)
@@ -190,6 +190,10 @@ class POISystem:
 
         if location_id not in self.location_data["locations"]:
             return False, 0, f"Unknown location: {location_id}"
+
+        # SPECIAL: Quantum Moon requires frequency insertion THIS LOOP (physical state)
+        if location_id == "quantum_moon" and not frequency_entered:
+            return False, 0, "Navigation to Quantum Moon requires frequency insertion at radio station."
 
         # Check if location is accessible
         loc_info = self.location_data["locations"][location_id]
@@ -213,11 +217,14 @@ class POISystem:
         full_poi_id = f"{location_id}.{starting_poi}"
         self.visited_pois.add(full_poi_id)
 
+        # Exit ship after landing
+        self.in_ship = False
+
         loc_name = loc_info.get("name", location_id)
 
         return True, 2, f"You land on {loc_name}..."
 
-    def get_contextual_actions(self, knowledge_menu, frequency_entered=False, npc_system=None, quantum_system=None) -> List[str]:
+    def get_contextual_actions(self, knowledge_menu, frequency_entered=False, launch_code_entered=False, npc_system=None, quantum_system=None, cavern_has_collapsed=False) -> List[str]:
         """Get list of available actions based on current context with icons"""
         actions = []
 
@@ -242,14 +249,9 @@ class POISystem:
                     # Special gate for Quantum Moon - requires frequency entry THIS LOOP
                     if loc_id == "quantum_moon":
                         if frequency_entered:
-                            # Frequency entered - accessible
+                            # Frequency entered this loop - accessible
                             actions.append(f"→ Visit {loc_name}")
-                        elif knowledge_menu.has_knowledge("quantum_moon_frequency"):
-                            # Know frequency exists but haven't entered it yet
-                            actions.append(f"→ Visit {loc_name} (insert frequency at radio station)")
-                        else:
-                            # Don't know frequency yet - show as unknown
-                            actions.append(f"→ Visit ??? (quantum interference detected)")
+                        # else: Don't show in navigation menu (ship console shows status instead)
                     elif always_accessible or knowledge_menu.progress.has_all_knowledge(requires_knowledge):
                         # Accessible - show normally
                         actions.append(f"→ Visit {loc_name}")
@@ -261,11 +263,15 @@ class POISystem:
                         actions.append(f"→ Visit {loc_name} (requires: {lock_reason})")
         elif self.in_ship:
             # In ship, on ground
-            # Check for ship_operation knowledge directly (epistemic gate on launch, not entry)
-            if knowledge_menu.has_knowledge("ship_operation"):
+            # Check if code has been entered THIS LOOP (physical state)
+            if launch_code_entered:
                 actions.append("→ Launch")
             else:
-                actions.append("• Enter Launch Code")
+                # Show hint if player knows the code (epistemic knowledge)
+                if knowledge_menu.has_knowledge("launch_code_epistemic"):
+                    actions.append("• Enter Launch Code (EPISTEMIC)")
+                else:
+                    actions.append("• Enter Launch Code")
             actions.append("• Exit Ship")
         else:
             # Outside ship
@@ -274,6 +280,10 @@ class POISystem:
             # Movement options - ALWAYS show all connected POIs
             available_pois = self.get_available_pois()
             for poi in available_pois:
+                # Skip quantum cavern if collapsed
+                if poi['id'] == 'quantum_cavern' and cavern_has_collapsed:
+                    continue
+
                 poi_name = self._strip_articles(poi['name'])
 
                 # Add (visited) label if player has been there
@@ -347,10 +357,14 @@ class POISystem:
                         # Frequency already entered this loop
                         actions.append("• Insert Frequency ✓")
 
-            # Special grove ending action (after all content exhausted)
+            # Special grove actions
             if self.current_location == "quantum_moon" and self.current_poi == "grove":
                 if knowledge_menu.has_knowledge("complete_understanding"):
+                    # Can end the game - show ending action
                     actions.append("Witness the End")
+                else:
+                    # Cannot end yet - allow return to surface via eye closing
+                    actions.append("Close Eyes")
 
         return actions
 
@@ -364,14 +378,14 @@ class POISystem:
         current_poi_data = self.get_current_poi_data()
         return current_poi_data.get("name", self.current_poi.replace("_", " ").title())
 
-    def show_current_scene(self, knowledge_menu=None, frequency_entered=False):
+    def show_current_scene(self, knowledge_menu=None, frequency_entered=False, launch_code_entered=False):
         """Display current POI description and context"""
         # Check ship states first
         if self.ship_flying:
             self._show_space_view()
             return
         elif self.in_ship:
-            self._show_ship_interior(knowledge_menu, frequency_entered)
+            self._show_ship_interior(knowledge_menu, frequency_entered, launch_code_entered)
             return
 
         # Normal POI display
@@ -395,7 +409,7 @@ class POISystem:
         self.console.print(scene)
         time.sleep(0.3)
 
-    def _show_ship_interior(self, knowledge_menu=None, frequency_entered=False):
+    def _show_ship_interior(self, knowledge_menu=None, frequency_entered=False, launch_code_entered=False):
         """Show ship cockpit view with knowledge-based console states"""
         scene = Text()
         scene.append("\n━━━ SHIP COCKPIT ━━━\n\n", style="bold cyan")
@@ -406,9 +420,9 @@ class POISystem:
 
         scene.append("You sit at the ship's controls. The console glows before you:\n\n", style="white")
 
-        # Determine console state based on knowledge
+        # Determine console state based on knowledge and physical state
         has_frequencies = knowledge_menu and knowledge_menu.has_knowledge("signal_scope_frequencies")
-        has_launch_code = knowledge_menu and knowledge_menu.has_knowledge("ship_operation")
+        knows_launch_code = knowledge_menu and knowledge_menu.has_knowledge("launch_code_epistemic")
         has_qm_frequency = knowledge_menu and knowledge_menu.has_knowledge("quantum_moon_frequency")
 
         # Ship console display
@@ -424,11 +438,18 @@ class POISystem:
             scene.append("║  log navigation frequencies  ║\n", style="dim")
         else:
             # State 2+: Has frequencies
-            # Show launch code status
-            if has_launch_code:
+            # Show launch code status (3 states: entered, known, unknown)
+            if launch_code_entered:
+                # Code entered this loop - ready to launch
                 scene.append("║  STATUS: READY ✓             ║\n", style="green")
                 scene.append("║  CODE: EPISTEMIC             ║\n", style="green")
+            elif knows_launch_code:
+                # Know the code but haven't entered it yet this loop
+                scene.append("║  STATUS: LOCKED              ║\n", style="yellow")
+                scene.append("║  CODE: [EPISTEMIC]           ║\n", style="dim yellow")
+                scene.append("║  └─ Re-enter to activate     ║\n", style="dim yellow")
             else:
+                # Don't know the code yet
                 scene.append("║  STATUS: LOCKED              ║\n", style="yellow")
                 scene.append("║  LAUNCH CODE: [________]     ║\n", style="yellow")
 
@@ -445,8 +466,8 @@ class POISystem:
                 # Frequency entered this loop - accessible
                 scene.append("║  [5555] Quantum Moon         ║\n", style="bold magenta")
             elif has_qm_frequency:
-                # Know frequency but haven't entered it yet
-                scene.append("║  [5555] Quantum Moon         ║\n", style="dim yellow")
+                # Know frequency but haven't entered it yet - show as inactive
+                scene.append("║  [????] Quantum Moon (5555)  ║\n", style="dim yellow")
                 scene.append("║   └─ Insert at radio station ║\n", style="dim yellow")
             elif knowledge_menu and knowledge_menu.has_knowledge("quantum_signal_detected"):
                 scene.append("║  [????] Unknown Signal       ║\n", style="yellow")

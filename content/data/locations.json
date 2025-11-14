@@ -73,7 +73,8 @@
           "adds_to_log": true,
           "importance": "important",
           "short_desc": "Mysterious sixth orbital location mentioned in Nomai texts",
-          "appears_after": []
+          "appears_after": [],
+          "key_info": "Launch Code: EPISTEMIC"
         },
         "ship_access_tutorial": {
           "title": "Ship Access",
@@ -81,7 +82,7 @@
           "format": "system",
           "quantum": false,
           "requires_knowledge": ["launch_code_epistemic"],
-          "knowledge_grants": ["ship_operation"],
+          "knowledge_grants": [],
           "adds_to_log": false,
           "importance": "critical",
           "short_desc": "Operating the spacecraft",
@@ -96,7 +97,8 @@
           "adds_to_log": true,
           "importance": "critical",
           "short_desc": "Navigation frequencies for interplanetary travel",
-          "appears_after": ["hornfels_met"]
+          "appears_after": ["hornfels_met"],
+          "key_info": "Timber Hearth: 2841 | Attlerock: 2847 | Brittle Hollow: 2857"
         },
         "cardinal_directions_poem": {
           "title": "Quantum Moon Navigation Protocol",
@@ -115,7 +117,7 @@
     "attlerock": {
       "name": "The Attlerock",
       "emoji": "🌑",
-      "description": "Timber Hearth's moon. Covered in Nomai ruins. Some of the texts flicker in and out—quantum instability.",
+      "description": "Timber Hearth's moon. Covered in Nomai ruins. Some of the texts flicker in and out.",
       "always_accessible": false,
       "requires_knowledge": ["ship_operation"],
       "starting_poi": "landing_site",
@@ -215,14 +217,14 @@
     "brittle_hollow": {
       "name": "Brittle Hollow",
       "emoji": "⚫",
-      "description": "Fractured planet collapsing into its black hole. The quantum tower stands above the crumbling surface—surrounded by Nomai time loop research.",
+      "description": "Fractured planet collapsing into its black hole. The quantum tower stands above the crumbling surface, surrounded by Nomai time loop research.",
       "always_accessible": false,
       "requires_knowledge": ["ship_operation"],
       "starting_poi": "landing_site",
       "points_of_interest": {
         "landing_site": {
           "name": "Landing Site",
-          "description": "Ship's on unstable ground. Chunks of planet falling into the black hole below—you can hear them crack off. Tower's ahead.",
+          "description": "Ship's on unstable ground. Chunks of planet falling into the black hole below. You can hear them crack off. Tower's ahead.",
           "has_ship": true,
           "npcs": ["riebeck"],
           "grid_position": [0, 0],
@@ -245,6 +247,12 @@
         "quantum_cavern": {
           "name": "Quantum Cavern",
           "description": "The walls shimmer with quantum instability. Nomai script glows faintly—something about the Sixth Location. The entrance wasn't visible before, but now you can perceive it.",
+          "collapse_mechanics": {
+            "collapses_at_action": 14,
+            "death_message": "The chunk of Brittle Hollow beneath you breaks away. You fall into the black hole's event horizon. Everything stretches... then nothing.",
+            "cutscene_message": "The ground shakes violently. You watch as the quantum cavern chunk breaks away from the planet and spirals into the black hole below. It's gone. Maybe earlier next time?",
+            "blocked_message": "The quantum cavern fell into the black hole. (Try earlier in the loop)"
+          },
           "entries": ["quantum_moon_frequency"],
           "grid_position": [0, 3],
           "connections": ["tower"],
@@ -305,7 +313,7 @@
     "quantum_moon": {
       "name": "The Quantum Moon",
       "emoji": "",
-      "description": "Moon in superposition across six locations simultaneously. Solanum waits at the Eye's sixth location—in her grove, among the quantum trees.",
+      "description": "Moon in superposition across six locations simultaneously. Solanum waits at the Eye's sixth location.",
       "always_accessible": false,
       "requires_knowledge": ["quantum_moon_frequency"],
       "requires_exploration_percentage": 0.75,
@@ -313,7 +321,7 @@
       "points_of_interest": {
         "surface": {
           "name": "Quantum Moon Surface",
-          "description": "You stand on the moon's surface. The landscape flickers with quantum instability. Traditional navigation won't work here—you must observe the environment and choose your path wisely.",
+          "description": "You stand on the moon's surface. The landscape flickers with quantum instability. Traditional navigation won't work here... You must observe the environment and choose your path wisely.",
           "has_ship": true,
           "entries": [],
           "grid_position": [0, 0],
@@ -325,7 +333,7 @@
         },
         "grove": {
           "name": "The Grove",
-          "description": "Quantum trees shimmer—impossible light. Solanum's here, standing among them.",
+          "description": "Pitch black quantum trees, reflections like stars painted on the night sky. Solanum's here, standing among them.",
           "npcs": ["solanum"],
           "entries": ["solanum_location", "guidance_dialogue", "thesis_ending"],
           "grid_position": [0, 2],

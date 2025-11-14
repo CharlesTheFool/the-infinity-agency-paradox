@@ -8,7 +8,7 @@
 
 Recording this mid-afternoon, I think. Hard to judge time on Attlerock without the sun visible.
 
-The Nomai discovered a framework for understanding how physical spaces convey narrative. Scholar Henry Jenkins identified four distinct patterns.
+We, The Nomai discovered a framework for understanding how physical spaces convey narrative. Scholar Henry Jenkins identified four distinct patterns.
 
 ---
 

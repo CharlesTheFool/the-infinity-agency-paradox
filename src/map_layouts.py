@@ -12,10 +12,11 @@ from src.minimap_config import *
 class MapLayout:
     """Generates spatial ASCII maps based on POI topology"""
 
-    def __init__(self, location_data: Dict, poi_system, knowledge_menu):
+    def __init__(self, location_data: Dict, poi_system, knowledge_menu, loop_manager):
         self.location_data = location_data
         self.poi_system = poi_system
         self.knowledge_menu = knowledge_menu
+        self.loop_manager = loop_manager
 
     def generate_spatial_map(self, location_id: str) -> Text:
         """Generate spatial map for location"""
@@ -91,7 +92,11 @@ class MapLayout:
         top_marker = "@" if top_is_current else self._get_poi_marker(location_id, top_poi_id)
         top_inline = self._get_inline_details(location_id, top_poi_id, top_poi, is_current=top_is_current)
         marker_line = f"{top_marker}  {top_inline}" if top_inline else top_marker
-        marker_style = "bold cyan" if top_is_current else ("white" if top_inline else "dim")
+        # Check for collapsed state
+        if top_marker == ICON_COLLAPSED:
+            marker_style = COLOR_COLLAPSED
+        else:
+            marker_style = "bold cyan" if top_is_current else ("white" if top_inline else "dim")
         content.append(marker_line.center(46) + "\n\n", style=marker_style)
 
         # Render vertical connector
@@ -107,7 +112,11 @@ class MapLayout:
         bottom_marker = "@" if bottom_is_current else self._get_poi_marker(location_id, bottom_poi_id)
         bottom_inline = self._get_inline_details(location_id, bottom_poi_id, bottom_poi, is_current=bottom_is_current)
         marker_line = f"{bottom_marker}  {bottom_inline}" if bottom_inline else bottom_marker
-        marker_style = "bold cyan" if bottom_is_current else ("white" if bottom_inline else "dim")
+        # Check for collapsed state
+        if bottom_marker == ICON_COLLAPSED:
+            marker_style = COLOR_COLLAPSED
+        else:
+            marker_style = "bold cyan" if bottom_is_current else ("white" if bottom_inline else "dim")
         content.append(marker_line.center(46) + "\n", style=marker_style)
 
         return content
@@ -135,7 +144,11 @@ class MapLayout:
             marker = "@" if is_current else self._get_poi_marker(location_id, poi_id)
             inline_details = self._get_inline_details(location_id, poi_id, poi_data, is_current=is_current)
             marker_line = f"{marker}  {inline_details}" if inline_details else marker
-            marker_style = "bold cyan" if is_current else ("white" if inline_details else "dim")
+            # Check for collapsed state
+            if marker == ICON_COLLAPSED:
+                marker_style = COLOR_COLLAPSED
+            else:
+                marker_style = "bold cyan" if is_current else ("white" if inline_details else "dim")
             content.append(marker_line.center(46) + "\n", style=marker_style)
 
             # Add vertical connector if not the last POI
@@ -166,7 +179,11 @@ class MapLayout:
         marker = "@" if is_current else self._get_poi_marker(location_id, poi_id)
         inline_details = self._get_inline_details(location_id, poi_id, poi_data, is_current=is_current)
         marker_line = f"{marker}  {inline_details}" if inline_details else marker
-        marker_style = "bold cyan" if is_current else ("white" if inline_details else "dim")
+        # Check for collapsed state
+        if marker == ICON_COLLAPSED:
+            marker_style = COLOR_COLLAPSED
+        else:
+            marker_style = "bold cyan" if is_current else ("white" if inline_details else "dim")
         content.append(marker_line.center(46) + "\n", style=marker_style)
 
         return content
@@ -196,7 +213,11 @@ class MapLayout:
         top_marker = "@" if top_is_current else self._get_poi_marker(location_id, top_poi_id)
         top_inline = self._get_inline_details(location_id, top_poi_id, top_poi, is_current=top_is_current)
         top_marker_line = f"{top_marker}  {top_inline}" if top_inline else top_marker
-        marker_style = "bold cyan" if top_is_current else ("white" if top_inline else "dim")
+        # Check for collapsed state
+        if top_marker == ICON_COLLAPSED:
+            marker_style = COLOR_COLLAPSED
+        else:
+            marker_style = "bold cyan" if top_is_current else ("white" if top_inline else "dim")
         content.append(top_marker_line.center(46) + "\n\n", style=marker_style)
 
         # Render diagonal connectors
@@ -217,14 +238,22 @@ class MapLayout:
         left_marker = "@" if left_is_current else self._get_poi_marker(location_id, left_poi_id)
         left_inline = self._get_inline_details(location_id, left_poi_id, left_poi, is_current=left_is_current)
         left_marker_line = f"{left_marker}  {left_inline}" if left_inline else left_marker
-        left_style = "bold cyan" if left_is_current else ("white" if left_inline else "dim")
+        # Check for collapsed state
+        if left_marker == ICON_COLLAPSED:
+            left_style = COLOR_COLLAPSED
+        else:
+            left_style = "bold cyan" if left_is_current else ("white" if left_inline else "dim")
         content.append(f"{left_marker_line:<23}", style=left_style)
 
         # Render right marker
         right_marker = "@" if right_is_current else self._get_poi_marker(location_id, right_poi_id)
         right_inline = self._get_inline_details(location_id, right_poi_id, right_poi, is_current=right_is_current)
         right_marker_line = f"{right_marker}  {right_inline}" if right_inline else right_marker
-        right_style = "bold cyan" if right_is_current else ("white" if right_inline else "dim")
+        # Check for collapsed state
+        if right_marker == ICON_COLLAPSED:
+            right_style = COLOR_COLLAPSED
+        else:
+            right_style = "bold cyan" if right_is_current else ("white" if right_inline else "dim")
         content.append(f"{right_marker_line:>23}\n", style=right_style)
 
         return content
@@ -342,6 +371,10 @@ class MapLayout:
         """Get single-character marker for POI"""
         location_data = self.location_data["locations"][location_id]
         poi_data = location_data.get("points_of_interest", {}).get(poi_id, {})
+
+        # Check if quantum cavern has collapsed (time-based blocker)
+        if poi_id == "quantum_cavern" and self.loop_manager.cavern_has_collapsed:
+            return ICON_COLLAPSED  # "◌" - fallen into black hole
 
         # Check if POI itself requires knowledge to access
         poi_requires = poi_data.get("requires_knowledge", [])

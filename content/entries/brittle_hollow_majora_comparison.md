@@ -96,7 +96,7 @@ Not epistemic. Traditional roguelike difficulty using time loop aesthetic."
 "Our reality. The true epistemic loop:
 
 **What persists**: Knowledge ONLY
-- Ship's log entries
+- Ship's log entries (optional)
 - Understanding of systems
 - Comprehension of relationships
 - Synthesis of patterns

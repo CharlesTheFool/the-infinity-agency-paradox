@@ -16,7 +16,3 @@
 ---
 
 Your signal scope will use these frequencies for interplanetary navigation.
-
-Frequencies persist across time loop resets. Knowledge endures.
-
-Once logged, these frequencies auto-register each loop. No need to return here.

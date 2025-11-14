@@ -66,15 +66,19 @@ class NPCSystem:
 
     def _can_access_dialogue(self, dialogue: Dict, knowledge_menu) -> bool:
         """Check if dialogue prerequisites are met"""
+        # Check knowledge requirements
         required_knowledge = dialogue.get("requires_knowledge", [])
         if required_knowledge:
-            return knowledge_menu.progress.has_all_knowledge(required_knowledge)
+            if not knowledge_menu.progress.has_all_knowledge(required_knowledge):
+                return False
 
+        # Check discovery requirements (must ALSO pass)
         required_discoveries = dialogue.get("requires_discoveries", [])
         if required_discoveries:
-            return all(d in knowledge_menu.progress.entries_discovered for d in required_discoveries)
+            if not all(d in knowledge_menu.progress.entries_discovered for d in required_discoveries):
+                return False
 
-        return True
+        return True  # Both checks passed (or didn't exist)
 
     def talk_to_npc(self, npc_id: str, knowledge_menu, interactions=None) -> Optional[str]:
         """

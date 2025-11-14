@@ -6,13 +6,11 @@
 
 ## THE DEONTIC ILLUSION
 
-We have studied countless civilizations across the galaxy. Most species make the same mistake: they conflate agency with outcome control.
+We have studied countless civilizations across the galaxy! Most species make the same mistake: they conflate agency with outcome control. Tragic.
 
-Outer Wilds challenges how civilizations conceptualize meaningful choice. Traditional narrative experiences emphasize branching paths and multiple outcomes. This universe offers exactly one ending. Entropy. The heat death is inevitable. The Nomai civilization is gone. we perished 280,000 years ago. You cannot stop the supernova. It's the sun's natural conclusion.
+Outer Wilds challenges how to conceptualize meaningful choice. Traditional narrative experiences emphasize branching paths and multiple outcomes. This universe offers exactly one ending. Entropy. The heat death is inevitable. The Nomai civilization is gone. we perished 280,000 years ago. Now it's your turn. You cannot stop the supernova. It's the sun's natural conclusion.
 
-Yet travelers consistently report feelings of agency and authorship over their experience.
-
-This exposes the **Categorical Error**: treating agency as outcome manipulation rather than something else entirely.
+Yet travelers consistently report feelings of agency and authorship over their experience. Why?
 
 ---
 

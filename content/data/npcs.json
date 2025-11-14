@@ -14,23 +14,31 @@
           "lines": [
             {
               "speaker": "npc",
-              "text": "Hey there, Hatchling! Welcome to the space program. You get to explore the whole solar system and see what you can find."
+              "text": "Hey there, Hatchling! You're officially our youngest astronaut now. Welcome to the space program."
             },
             {
               "speaker": "player",
-              "text": "That's it? Just explore?"
+              "text": "So what's my mission?"
             },
             {
               "speaker": "npc",
-              "text": "Yep! The Nomai left ruins everywhere. We're trying to figure out what they knew and what they were looking for."
+              "text": "Same as everyone else. Explore the solar system, uncover what you can about the Nomai. They went extinct thousands of years ago, but their ruins are everywhere."
             },
             {
               "speaker": "player",
-              "text": "What should I do first?"
+              "text": "What are we hoping to find?"
             },
             {
               "speaker": "npc",
-              "text": "Take your time. Look around the village, check out the Observatory. When you're ready to launch, you'll know what you need."
+              "text": "Whatever they knew. What they were looking for. And, uh, their unique analytical frameworks regarding epistemic agency. You know, the usual ancient alien civilization stuff."
+            },
+            {
+              "speaker": "player",
+              "text": "That last part sounds oddly specific."
+            },
+            {
+              "speaker": "npc",
+              "text": "Look, I didn't write the grant proposal. Just take your time, explore the village, check out the Observatory. When you're ready to launch, you'll know what you need."
             }
           ]
         },
@@ -91,15 +99,15 @@
           "lines": [
             {
               "speaker": "npc",
-              "text": "You've launched! How's space treating you, Hatchling?"
+              "text": "Ready to head out into space? The solar system is waiting for you, Hatchling."
             },
             {
               "speaker": "player",
-              "text": "It's bigger than I expected."
+              "text": "I'm excited to see what's out there."
             },
             {
               "speaker": "npc",
-              "text": "Ha! It has a way of doing that. Keep exploring. There's more out there than any of us realized."
+              "text": "That's the spirit! Keep exploring. There's more out there than any of us realized."
             }
           ]
         }
@@ -205,7 +213,7 @@
           "lines": [
             {
               "speaker": "npc",
-              "text": "Hey, Hatchling! Just taking it easy at the radio station. Not much to do except listen to signals."
+              "text": "Hey there. Just hanging out, listening to everyone's signals. It's pretty peaceful."
             },
             {
               "speaker": "player",
@@ -213,15 +221,15 @@
             },
             {
               "speaker": "npc",
-              "text": "Why stress? Universe does its thing, we do ours. Besides, once you log a frequency on your signal scope, it sticks with you. Even through those weird time reset things."
+              "text": "Not a lot happens here. Good spot to just exist, you know? Oh, the frequencies you log stick with you. Handy for navigation. They persist even through the... well, you'll figure that part out."
             },
             {
               "speaker": "player",
-              "text": "Time resets? What?"
+              "text": "Persist through what?"
             },
             {
               "speaker": "npc",
-              "text": "You'll figure it out. Check the frequency log to see what's out there. Makes space travel way easier."
+              "text": "You'll know when it happens. Check the frequency log sometime. Shows you who's out there broadcasting."
             },
             {
               "speaker": "player",
@@ -229,7 +237,7 @@
             },
             {
               "speaker": "npc",
-              "text": "There's this weird quantum signal we keep picking up. Haven't figured out the frequency yet. If you find it, come plug it in. Or don't. I'm not your boss."
+              "text": "We've been picking up this weird quantum signal. Haven't pinned down the frequency yet. If you stumble across it, come back and we'll add it to the log."
             }
           ]
         },
@@ -242,7 +250,7 @@
           "lines": [
             {
               "speaker": "npc",
-              "text": "So you noticed the loops too, huh? Yeah, it's wild. At least we keep our memories. Pretty handy for exploration."
+              "text": "So you've noticed too. Yeah, time keeps resetting. Weird stuff."
             },
             {
               "speaker": "player",
@@ -250,7 +258,7 @@
             },
             {
               "speaker": "npc",
-              "text": "What's the point in panicking? Signal scope knowledge persists through resets. Once you log a frequency, you're good forever."
+              "text": "What am I gonna do, panic? We keep our memories at least. Could be worse."
             }
           ]
         }
@@ -270,7 +278,7 @@
           "lines": [
             {
               "speaker": "npc",
-              "text": "Oh! Hey, Hatchling! I'm Riebeck. Geologist and, well, reluctant quantum researcher I guess."
+              "text": "Oh! Hey, Hatchling! I'm Riebeck. I'd say I'm a geologist, but I've been more of a reluctant quantum researcher I guess."
             },
             {
               "speaker": "player",
@@ -282,7 +290,7 @@
             },
             {
               "speaker": "player",
-              "text": "I've seen those flickering texts on the Attlerock."
+              "text": "I might have seen something like it before..."
             },
             {
               "speaker": "npc",
@@ -299,7 +307,7 @@
           "lines": [
             {
               "speaker": "npc",
-              "text": "You're back! Wait, you can see it too, right? The quantum instability?"
+              "text": "Oh, you're here! Wait, you can see it too, right? The quantum instability?"
             },
             {
               "speaker": "player",
@@ -339,6 +347,35 @@
               "text": "Every direction looped back on itself. Super disorienting. I think you need to understand the quantum environment to navigate it. Maybe there's a protocol somewhere?"
             }
           ]
+        },
+        {
+          "id": "riebeck_cavern_collapse",
+          "priority": 95,
+          "requires_knowledge": ["quantum_cavern_discovered", "cavern_collapse_witnessed"],
+          "grants_knowledge": null,
+          "teaches": "The quantum cavern is unstable and can fall into the black hole. Time your exploration carefully.",
+          "lines": [
+            {
+              "speaker": "npc",
+              "text": "Did you see that?! The quantum cavern just—it broke away from the planet! Fell straight into the black hole!"
+            },
+            {
+              "speaker": "player",
+              "text": "I saw it. The whole chunk just... collapsed."
+            },
+            {
+              "speaker": "npc",
+              "text": "This planet is so unstable. I've been tracking the structural decay patterns, and certain areas go first. The cavern was always precarious. If you need to get there, you'll have to move fast early in the... well, early."
+            },
+            {
+              "speaker": "player",
+              "text": "How much time do I have?"
+            },
+            {
+              "speaker": "npc",
+              "text": "Based on my calculations? Not much. Maybe 14, 15 actions at most before that section collapses. I know that's not a lot of time, but it's what we're working with on a disintegrating planet."
+            }
+          ]
         }
       ]
     },
@@ -358,7 +395,7 @@
           "lines": [
             {
               "speaker": "npc",
-              "text": "Hello, Hatchling. I've been waiting here, watching the quantum states collapse and reform. It's peaceful."
+              "text": "Hello, Hearthian. I've been waiting here, watching the quantum states collapse and reform. It's peaceful."
             },
             {
               "speaker": "player",
