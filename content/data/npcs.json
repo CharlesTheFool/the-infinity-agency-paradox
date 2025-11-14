@@ -1,0 +1,393 @@
+{
+  "npcs": {
+    "hornfels": {
+      "name": "Hornfels",
+      "description": "A Hearthian astronomer studying star charts by the campfire.",
+      "fallback_dialogue": "Hornfels continues studying the star charts, occasionally making notes.",
+      "dialogues": [
+        {
+          "id": "hornfels_intro",
+          "priority": 100,
+          "requires_knowledge": [],
+          "grants_knowledge": "hornfels_met",
+          "teaches": "Explore Timber Hearth to piece together the knowledge needed for space travel.",
+          "lines": [
+            {
+              "speaker": "npc",
+              "text": "Hey there, Hatchling! Welcome to the space program. You get to explore the whole solar system and see what you can find."
+            },
+            {
+              "speaker": "player",
+              "text": "That's it? Just explore?"
+            },
+            {
+              "speaker": "npc",
+              "text": "Yep! The Nomai left ruins everywhere. We're trying to figure out what they knew and what they were looking for."
+            },
+            {
+              "speaker": "player",
+              "text": "What should I do first?"
+            },
+            {
+              "speaker": "npc",
+              "text": "Take your time. Look around the village, check out the Observatory. When you're ready to launch, you'll know what you need."
+            }
+          ]
+        },
+        {
+          "id": "hornfels_pre_code",
+          "priority": 80,
+          "requires_knowledge": ["hornfels_met"],
+          "requires_discoveries": [],
+          "grants_knowledge": null,
+          "teaches": "Examine the artifacts in the Observatory to learn what you need for space travel.",
+          "lines": [
+            {
+              "speaker": "npc",
+              "text": "Have you checked out the artifacts in the Observatory yet? They've got really useful stuff for your voyage."
+            },
+            {
+              "speaker": "player",
+              "text": "I'll check them out."
+            },
+            {
+              "speaker": "npc",
+              "text": "Good idea. Take your time with them. Even the unstable looking ones."
+            }
+          ]
+        },
+        {
+          "id": "hornfels_code_delivery",
+          "priority": 90,
+          "requires_knowledge": ["hornfels_met"],
+          "requires_discoveries": ["timber_hearth.deontic_critique", "timber_hearth.epistemic_intro", "timber_hearth.launch_code_discovery"],
+          "grants_knowledge": "launch_code_epistemic",
+          "teaches": null,
+          "lines": [
+            {
+              "speaker": "npc",
+              "text": "Hey, you've been through all the exhibits! Everything we archived from the Nomai ruins."
+            },
+            {
+              "speaker": "player",
+              "text": "Yeah, fascinating stuff. The way they thought about knowledge and agency."
+            },
+            {
+              "speaker": "npc",
+              "text": "Exactly! That's the understanding you need. Your ship's launch code is EPISTEMIC. That'll get you off-world."
+            },
+            {
+              "speaker": "player",
+              "text": "EPISTEMIC. Got it."
+            }
+          ]
+        },
+        {
+          "id": "hornfels_after_launch",
+          "priority": 50,
+          "requires_knowledge": ["ship_operation"],
+          "grants_knowledge": null,
+          "teaches": null,
+          "lines": [
+            {
+              "speaker": "npc",
+              "text": "You've launched! How's space treating you, Hatchling?"
+            },
+            {
+              "speaker": "player",
+              "text": "It's bigger than I expected."
+            },
+            {
+              "speaker": "npc",
+              "text": "Ha! It has a way of doing that. Keep exploring. There's more out there than any of us realized."
+            }
+          ]
+        }
+      ]
+    },
+    "esker": {
+      "name": "Esker",
+      "description": "A lone Hearthian explorer gazing at the quantum anomalies.",
+      "fallback_dialogue": "Esker watches the flickering Nomai texts with quiet fascination.",
+      "dialogues": [
+        {
+          "id": "esker_intro",
+          "priority": 100,
+          "requires_knowledge": [],
+          "grants_knowledge": "esker_met",
+          "teaches": "Some knowledge requires special techniques to access. Look for hints in the environment.",
+          "lines": [
+            {
+              "speaker": "npc",
+              "text": "Hey there, Hatchling! Isn't this place incredible? Nomai ruins everywhere."
+            },
+            {
+              "speaker": "player",
+              "text": "I've never seen inscriptions like these. They're flickering?"
+            },
+            {
+              "speaker": "npc",
+              "text": "Quantum superposition! The texts exist in multiple states until you observe them right. There's a technique for it. I found instructions on one of the readable texts here."
+            },
+            {
+              "speaker": "player",
+              "text": "I'll look for it."
+            },
+            {
+              "speaker": "npc",
+              "text": "Once you learn it, all sorts of hidden knowledge opens up. It's like learning to see in a whole new way."
+            }
+          ]
+        },
+        {
+          "id": "esker_after_quantum",
+          "priority": 50,
+          "requires_knowledge": ["quantum_stabilization_ability"],
+          "grants_knowledge": null,
+          "teaches": null,
+          "lines": [
+            {
+              "speaker": "npc",
+              "text": "You learned quantum observation! Nice work. There are flickering texts all over the solar system you can read now."
+            },
+            {
+              "speaker": "player",
+              "text": "It's an incredible technique."
+            },
+            {
+              "speaker": "npc",
+              "text": "Right? One discovery just leads to another."
+            }
+          ]
+        },
+        {
+          "id": "esker_quantum_moon_hint",
+          "priority": 40,
+          "requires_knowledge": ["quantum_stabilization_ability", "signal_scope_frequencies"],
+          "grants_knowledge": ["quantum_moon_mentioned"],
+          "teaches": "There's a mysterious quantum object in the solar system. Riebeck on Brittle Hollow might know more.",
+          "lines": [
+            {
+              "speaker": "npc",
+              "text": "I've been seeing something strange out there. Some kind of quantum presence that flickers in and out."
+            },
+            {
+              "speaker": "player",
+              "text": "That's pretty convenient timing. What kind of presence?"
+            },
+            {
+              "speaker": "npc",
+              "text": "Can't pin it down. Not on your signal scope, but I swear I've glimpsed it. Riebeck's investigating quantum stuff on Brittle Hollow. They might know more."
+            },
+            {
+              "speaker": "player",
+              "text": "I'll check with Riebeck."
+            },
+            {
+              "speaker": "npc",
+              "text": "Good idea. If anyone can figure out a quantum mystery, it's them. Just be careful. Quantum space is weird."
+            }
+          ]
+        }
+      ]
+    },
+    "gabbro": {
+      "name": "Gabbro",
+      "description": "A laid-back Hearthian lounging by the radio equipment, surprisingly calm about the time loops.",
+      "fallback_dialogue": "Gabbro hums quietly, watching the signal frequencies dance across the displays.",
+      "dialogues": [
+        {
+          "id": "gabbro_intro",
+          "priority": 100,
+          "requires_knowledge": [],
+          "grants_knowledge": "gabbro_met",
+          "teaches": "Visit the radio station to log frequencies for space navigation.",
+          "lines": [
+            {
+              "speaker": "npc",
+              "text": "Hey, Hatchling! Just taking it easy at the radio station. Not much to do except listen to signals."
+            },
+            {
+              "speaker": "player",
+              "text": "You seem really relaxed."
+            },
+            {
+              "speaker": "npc",
+              "text": "Why stress? Universe does its thing, we do ours. Besides, once you log a frequency on your signal scope, it sticks with you. Even through those weird time reset things."
+            },
+            {
+              "speaker": "player",
+              "text": "Time resets? What?"
+            },
+            {
+              "speaker": "npc",
+              "text": "You'll figure it out. Check the frequency log to see what's out there. Makes space travel way easier."
+            },
+            {
+              "speaker": "player",
+              "text": "Anything else I should know?"
+            },
+            {
+              "speaker": "npc",
+              "text": "There's this weird quantum signal we keep picking up. Haven't figured out the frequency yet. If you find it, come plug it in. Or don't. I'm not your boss."
+            }
+          ]
+        },
+        {
+          "id": "gabbro_timeloop",
+          "priority": 50,
+          "requires_knowledge": ["gabbro_met", "time_loop_understanding"],
+          "grants_knowledge": null,
+          "teaches": null,
+          "lines": [
+            {
+              "speaker": "npc",
+              "text": "So you noticed the loops too, huh? Yeah, it's wild. At least we keep our memories. Pretty handy for exploration."
+            },
+            {
+              "speaker": "player",
+              "text": "How are you so calm about this?"
+            },
+            {
+              "speaker": "npc",
+              "text": "What's the point in panicking? Signal scope knowledge persists through resets. Once you log a frequency, you're good forever."
+            }
+          ]
+        }
+      ]
+    },
+    "riebeck": {
+      "name": "Riebeck",
+      "description": "A nervous but curious Hearthian geologist studying the quantum phenomena on Brittle Hollow.",
+      "fallback_dialogue": "Riebeck adjusts their equipment nervously, occasionally glancing at the fractured planet.",
+      "dialogues": [
+        {
+          "id": "riebeck_intro_basic",
+          "priority": 100,
+          "requires_knowledge": [],
+          "grants_knowledge": ["riebeck_met"],
+          "teaches": "Riebeck studies quantum phenomena. Learn quantum observation to discuss their discoveries.",
+          "lines": [
+            {
+              "speaker": "npc",
+              "text": "Oh! Hey, Hatchling! I'm Riebeck. Geologist and, well, reluctant quantum researcher I guess."
+            },
+            {
+              "speaker": "player",
+              "text": "Quantum researcher? That sounds fascinating."
+            },
+            {
+              "speaker": "npc",
+              "text": "Terrifying, more like. The Nomai left all this research about quantum superposition and hidden spaces, but I can't make sense of it. The texts flicker in and out, totally unstable. Also this planet is collapsing into a black hole which really doesn't help."
+            },
+            {
+              "speaker": "player",
+              "text": "I've seen those flickering texts on the Attlerock."
+            },
+            {
+              "speaker": "npc",
+              "text": "Right! If you figure out how to observe them, come talk to me. I think there's something important I'm just not seeing."
+            }
+          ]
+        },
+        {
+          "id": "riebeck_quantum_cavern",
+          "priority": 90,
+          "requires_knowledge": ["quantum_stabilization_ability"],
+          "grants_knowledge": ["quantum_cavern_discovered", "quantum_moon_mentioned"],
+          "teaches": "Riebeck found a quantum cavern past the tower on Brittle Hollow.",
+          "lines": [
+            {
+              "speaker": "npc",
+              "text": "You're back! Wait, you can see it too, right? The quantum instability?"
+            },
+            {
+              "speaker": "player",
+              "text": "I learned quantum observation. I can see flickering texts now."
+            },
+            {
+              "speaker": "npc",
+              "text": "That's it! That's what I was missing! There's a quantum cavern near the tower. You should be able to find it now. I found Nomai texts there about a 'Quantum Moon.'"
+            },
+            {
+              "speaker": "player",
+              "text": "Quantum Moon? Where is it?"
+            },
+            {
+              "speaker": "npc",
+              "text": "That's the mystery. I tried visiting but got completely lost. Kept walking in circles. Genuinely thought I was going to die there, which would've been embarrassing. The cavern has the frequency info. It's just past the tower."
+            }
+          ]
+        },
+        {
+          "id": "riebeck_after_frequency",
+          "priority": 50,
+          "requires_knowledge": ["quantum_moon_frequency"],
+          "grants_knowledge": null,
+          "teaches": null,
+          "lines": [
+            {
+              "speaker": "npc",
+              "text": "You found the Quantum Moon frequency? That's great! Just be careful on the surface. It's not like normal space."
+            },
+            {
+              "speaker": "player",
+              "text": "What happened when you were there?"
+            },
+            {
+              "speaker": "npc",
+              "text": "Every direction looped back on itself. Super disorienting. I think you need to understand the quantum environment to navigate it. Maybe there's a protocol somewhere?"
+            }
+          ]
+        }
+      ]
+    },
+    "solanum": {
+      "name": "Solanum",
+      "description": "A Nomai traveler who exists in quantum superposition, patient as starlight.",
+      "fallback_dialogue": "Solanum watches the quantum trees shimmer with impossible light.",
+      "dialogue_menu": true,
+      "dialogues": [
+        {
+          "id": "solanum_intro",
+          "priority": 100,
+          "requires_knowledge": [],
+          "grants_knowledge": "solanum_met",
+          "teaches": "You can talk to Solanum about different topics.",
+          "menu_text": "Introduce yourself",
+          "lines": [
+            {
+              "speaker": "npc",
+              "text": "Hello, Hatchling. I've been waiting here, watching the quantum states collapse and reform. It's peaceful."
+            },
+            {
+              "speaker": "player",
+              "text": "You're Nomai? I thought your species was gone."
+            },
+            {
+              "speaker": "npc",
+              "text": "We are gone, yes. But quantum entanglement allows certain persistences. I exist here at the Eye's sixth location. A quantum echo of who I was."
+            },
+            {
+              "speaker": "player",
+              "text": "I have so many questions."
+            },
+            {
+              "speaker": "npc",
+              "text": "And I have time. Ask me what you wish to understand."
+            }
+          ]
+        },
+        {
+          "id": "solanum_guidance",
+          "priority": 80,
+          "requires_knowledge": ["jenkins_framework", "time_loop_understanding"],
+          "grants_knowledge": "guidance_synthesis",
+          "teaches": null,
+          "menu_text": "Guidance Systems",
+          "entry_reference": "guidance_dialogue"
+        }
+      ]
+    }
+  }
+}

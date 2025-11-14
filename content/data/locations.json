@@ -1,0 +1,410 @@
+{
+  "locations": {
+    "timber_hearth": {
+      "name": "Timber Hearth Village",
+      "emoji": "🏠",
+      "description": "Your home planet. Observatory on the hillside, ship near the village center.",
+      "always_accessible": true,
+      "starting_poi": "village_center",
+      "points_of_interest": {
+        "village_center": {
+          "name": "Village Center",
+          "description": "Your ship's parked close. Cozy campfire crackling, someone was here recently. Observatory's up the hill to the north. Radio station's antenna visible to the west.",
+          "has_ship": true,
+          "grid_position": [0, 0],
+          "connections": ["observatory", "radio_station"],
+          "distance_to": {
+            "observatory": 2,
+            "radio_station": 1
+          }
+        },
+        "observatory": {
+          "name": "The Observatory",
+          "description": "Nomai wall texts on the walls, exhibits everywhere. Spiral scripts glowing faintly against the stone. Hornfels is standing near one wall, studying something.",
+          "npcs": ["hornfels"],
+          "entries": ["deontic_critique", "epistemic_intro", "launch_code_discovery", "cardinal_directions_poem"],
+          "grid_position": [0, -2],
+          "connections": ["village_center"],
+          "distance_to": {
+            "village_center": 2
+          }
+        },
+        "radio_station": {
+          "name": "Radio Station",
+          "description": "A weathered comm tower with blinking lights. Signal equipment hums. Gabbro's lounging nearby in a hammock, looking remarkably relaxed.",
+          "npcs": ["gabbro"],
+          "entries": ["signal_frequencies_log"],
+          "grid_position": [-2, 0],
+          "connections": ["village_center"],
+          "distance_to": {
+            "village_center": 1
+          }
+        }
+      },
+      "entries": {
+        "deontic_critique": {
+          "title": "Deontic Agency Critique",
+          "type": "wall_text",
+          "format": "academic",
+          "quantum": false,
+          "knowledge_grants": ["deontic_framework_understanding"],
+          "adds_to_log": true,
+          "importance": "optional",
+          "short_desc": "Critical analysis of game design constraints",
+          "appears_after": []
+        },
+        "epistemic_intro": {
+          "title": "Epistemic Framework Introduction",
+          "type": "wall_text",
+          "format": "academic",
+          "quantum": false,
+          "knowledge_grants": ["epistemic_framework_understanding"],
+          "adds_to_log": true,
+          "importance": "optional",
+          "short_desc": "Knowledge-based progression systems",
+          "appears_after": []
+        },
+        "launch_code_discovery": {
+          "title": "The Sixth Location",
+          "type": "audio_log",
+          "format": "conversational",
+          "quantum": false,
+          "knowledge_grants": ["quantum_moon_mentioned"],
+          "adds_to_log": true,
+          "importance": "important",
+          "short_desc": "Mysterious sixth orbital location mentioned in Nomai texts",
+          "appears_after": []
+        },
+        "ship_access_tutorial": {
+          "title": "Ship Access",
+          "type": "interface",
+          "format": "system",
+          "quantum": false,
+          "requires_knowledge": ["launch_code_epistemic"],
+          "knowledge_grants": ["ship_operation"],
+          "adds_to_log": false,
+          "importance": "critical",
+          "short_desc": "Operating the spacecraft",
+          "appears_after": []
+        },
+        "signal_frequencies_log": {
+          "title": "Traveler Signal Frequencies",
+          "type": "interface",
+          "format": "system",
+          "quantum": false,
+          "knowledge_grants": ["signal_scope_frequencies", "quantum_signal_detected"],
+          "adds_to_log": true,
+          "importance": "critical",
+          "short_desc": "Navigation frequencies for interplanetary travel",
+          "appears_after": ["hornfels_met"]
+        },
+        "cardinal_directions_poem": {
+          "title": "Quantum Moon Navigation Protocol",
+          "type": "wall_text",
+          "format": "academic",
+          "quantum": true,
+          "knowledge_grants": ["quantum_navigation_protocol", "grove_mentioned", "solanum_mentioned"],
+          "adds_to_log": true,
+          "importance": "critical",
+          "short_desc": "Instructions for navigating the Quantum Moon",
+          "appears_after": ["quantum_moon_mentioned"],
+          "key_info": "I: Crystals (E) → II: Tree (W) → III: Arch (N) → IV: Footsteps (S) → V: Close Eyes"
+        }
+      }
+    },
+    "attlerock": {
+      "name": "The Attlerock",
+      "emoji": "🌑",
+      "description": "Timber Hearth's moon. Covered in Nomai ruins. Some of the texts flicker in and out—quantum instability.",
+      "always_accessible": false,
+      "requires_knowledge": ["ship_operation"],
+      "starting_poi": "landing_site",
+      "points_of_interest": {
+        "landing_site": {
+          "name": "Landing Site",
+          "description": "Ship's down on cratered surface. Esker's here, watching the flickering inscriptions. Ruins in every direction.",
+          "has_ship": true,
+          "npcs": ["esker"],
+          "grid_position": [0, 0],
+          "connections": ["research_station"],
+          "distance_to": {
+            "research_station": 2
+          }
+        },
+        "research_station": {
+          "name": "Research Station",
+          "description": "Old Nomai research equipment surrounded by wall texts. Some of them are flickering with quantum interference.",
+          "entries": ["jenkins_overview", "quantum_stabilization", "evocative_spaces", "embedded_narratives", "enacting_stories", "emergent_narratives"],
+          "grid_position": [0, 2],
+          "connections": ["landing_site"],
+          "distance_to": {
+            "landing_site": 2
+          }
+        }
+      },
+      "entries": {
+        "jenkins_overview": {
+          "title": "Jenkins' Four Architectures",
+          "type": "wall_text",
+          "format": "academic",
+          "quantum": false,
+          "knowledge_grants": ["jenkins_framework", "quantum_moon_mentioned"],
+          "adds_to_log": true,
+          "importance": "optional",
+          "short_desc": "Environmental storytelling theory foundation",
+          "appears_after": []
+        },
+        "quantum_stabilization": {
+          "title": "Quantum Stabilization Technique",
+          "type": "audio_log",
+          "format": "conversational",
+          "quantum": false,
+          "knowledge_grants": ["quantum_stabilization_ability"],
+          "adds_to_log": true,
+          "is_key_unlock": true,
+          "importance": "critical",
+          "short_desc": "Stabilize quantum texts, unlock hidden knowledge",
+          "appears_after": ["ship_operation"]
+        },
+        "evocative_spaces": {
+          "title": "Evocative Spaces Analysis",
+          "type": "wall_text",
+          "format": "academic",
+          "quantum": false,
+          "knowledge_grants": ["evocative_spaces_understanding", "quantum_moon_mentioned"],
+          "adds_to_log": true,
+          "importance": "optional",
+          "short_desc": "Game environments evoking narrative meaning",
+          "appears_after": ["ship_operation"]
+        },
+        "embedded_narratives": {
+          "title": "Embedded Narratives Theory",
+          "type": "wall_text",
+          "format": "academic",
+          "quantum": true,
+          "knowledge_grants": ["embedded_narratives_understanding", "quantum_moon_mentioned"],
+          "adds_to_log": true,
+          "importance": "optional",
+          "short_desc": "Stories in environmental design",
+          "appears_after": ["quantum_stabilization_ability"]
+        },
+        "enacting_stories": {
+          "title": "Enacting Stories Discussion",
+          "type": "wall_text",
+          "format": "academic",
+          "quantum": true,
+          "knowledge_grants": ["enacting_stories_understanding", "quantum_moon_mentioned"],
+          "adds_to_log": true,
+          "importance": "optional",
+          "short_desc": "Player-performed narratives via gameplay",
+          "appears_after": ["quantum_stabilization_ability"]
+        },
+        "emergent_narratives": {
+          "title": "Emergent Narratives Analysis",
+          "type": "wall_text",
+          "format": "academic",
+          "quantum": false,
+          "knowledge_grants": ["emergent_narratives_understanding", "quantum_moon_mentioned"],
+          "adds_to_log": true,
+          "importance": "optional",
+          "short_desc": "Player choice creating stories through system interaction",
+          "appears_after": ["ship_operation"]
+        }
+      }
+    },
+    "brittle_hollow": {
+      "name": "Brittle Hollow",
+      "emoji": "⚫",
+      "description": "Fractured planet collapsing into its black hole. The quantum tower stands above the crumbling surface—surrounded by Nomai time loop research.",
+      "always_accessible": false,
+      "requires_knowledge": ["ship_operation"],
+      "starting_poi": "landing_site",
+      "points_of_interest": {
+        "landing_site": {
+          "name": "Landing Site",
+          "description": "Ship's on unstable ground. Chunks of planet falling into the black hole below—you can hear them crack off. Tower's ahead.",
+          "has_ship": true,
+          "npcs": ["riebeck"],
+          "grid_position": [0, 0],
+          "connections": ["tower"],
+          "distance_to": {
+            "tower": 2
+          }
+        },
+        "tower": {
+          "name": "The Tower",
+          "description": "Massive Nomai structure. Wall texts documenting temporal research everywhere. Signal tower console still has power.",
+          "entries": ["time_loop_intro", "majora_comparison", "quantum_research_notes"],
+          "grid_position": [0, 2],
+          "connections": ["landing_site", "quantum_cavern"],
+          "distance_to": {
+            "landing_site": 2,
+            "quantum_cavern": 1
+          }
+        },
+        "quantum_cavern": {
+          "name": "Quantum Cavern",
+          "description": "The walls shimmer with quantum instability. Nomai script glows faintly—something about the Sixth Location. The entrance wasn't visible before, but now you can perceive it.",
+          "entries": ["quantum_moon_frequency"],
+          "grid_position": [0, 3],
+          "connections": ["tower"],
+          "requires_knowledge": ["quantum_cavern_discovered"],
+          "distance_to": {
+            "tower": 1
+          }
+        }
+      },
+      "entries": {
+        "time_loop_intro": {
+          "title": "Time Loop Mechanics",
+          "type": "wall_text",
+          "format": "academic",
+          "quantum": false,
+          "knowledge_grants": ["time_loop_understanding"],
+          "adds_to_log": true,
+          "importance": "important",
+          "short_desc": "Temporal resets preserving knowledge",
+          "appears_after": ["ship_operation"]
+        },
+        "majora_comparison": {
+          "title": "Majora's Mask Comparison",
+          "type": "audio_log",
+          "format": "conversational",
+          "quantum": true,
+          "knowledge_grants": ["majora_analysis"],
+          "adds_to_log": true,
+          "importance": "optional",
+          "short_desc": "Zelda's time loop design parallels",
+          "appears_after": ["quantum_stabilization_ability"]
+        },
+        "quantum_research_notes": {
+          "title": "Quantum Perception Research",
+          "type": "wall_text",
+          "format": "academic",
+          "quantum": false,
+          "knowledge_grants": ["quantum_perception_hint", "quantum_moon_mentioned"],
+          "adds_to_log": true,
+          "importance": "important",
+          "short_desc": "Notes about quantum perception and hidden locations",
+          "appears_after": []
+        },
+        "quantum_moon_frequency": {
+          "title": "The Sixth Location - Quantum Moon",
+          "type": "wall_text",
+          "format": "academic",
+          "quantum": true,
+          "knowledge_grants": ["quantum_moon_frequency"],
+          "adds_to_log": true,
+          "importance": "critical",
+          "short_desc": "Frequency to perceive the Quantum Moon",
+          "appears_after": ["quantum_moon_mentioned"],
+          "key_info": "Frequency: 5555"
+        }
+      }
+    },
+    "quantum_moon": {
+      "name": "The Quantum Moon",
+      "emoji": "",
+      "description": "Moon in superposition across six locations simultaneously. Solanum waits at the Eye's sixth location—in her grove, among the quantum trees.",
+      "always_accessible": false,
+      "requires_knowledge": ["quantum_moon_frequency"],
+      "requires_exploration_percentage": 0.75,
+      "starting_poi": "surface",
+      "points_of_interest": {
+        "surface": {
+          "name": "Quantum Moon Surface",
+          "description": "You stand on the moon's surface. The landscape flickers with quantum instability. Traditional navigation won't work here—you must observe the environment and choose your path wisely.",
+          "has_ship": true,
+          "entries": [],
+          "grid_position": [0, 0],
+          "connections": ["grove"],
+          "requires_knowledge": [],
+          "distance_to": {
+            "grove": 0
+          }
+        },
+        "grove": {
+          "name": "The Grove",
+          "description": "Quantum trees shimmer—impossible light. Solanum's here, standing among them.",
+          "npcs": ["solanum"],
+          "entries": ["solanum_location", "guidance_dialogue", "thesis_ending"],
+          "grid_position": [0, 2],
+          "requires_knowledge": ["grove_navigation_complete"],
+          "connections": [],
+          "distance_to": {}
+        }
+      },
+      "entries": {
+        "solanum_location": {
+          "title": "Solanum's Grove",
+          "type": "location_discovery",
+          "format": "environmental",
+          "quantum": false,
+          "knowledge_grants": ["solanum_discovered"],
+          "adds_to_log": true,
+          "importance": "important",
+          "short_desc": "Solanum at the Quantum Moon",
+          "appears_after": ["solanum_mentioned"]
+        },
+        "guidance_dialogue": {
+          "title": "Guidance Systems & Epistemic Breadcrumbs",
+          "type": "dialogue",
+          "format": "synthesis",
+          "quantum": false,
+          "requires_knowledge": ["time_loop_understanding"],
+          "requires_dialogue_count": 2,
+          "knowledge_grants": ["guidance_synthesis"],
+          "adds_to_log": true,
+          "importance": "important",
+          "short_desc": "Player guidance design discussion",
+          "appears_after": ["solanum_discovered"]
+        },
+        "thesis_ending": {
+          "title": "Thesis Synthesis & The End",
+          "type": "ending",
+          "format": "emotional",
+          "quantum": false,
+          "requires_knowledge": ["guidance_synthesis"],
+          "requires_exploration_percentage": 0.9,
+          "knowledge_grants": ["complete_understanding"],
+          "adds_to_log": true,
+          "triggers_ending": true,
+          "importance": "critical",
+          "short_desc": "Final synthesis, thesis completion",
+          "appears_after": ["solanum_discovered"]
+        }
+      }
+    }
+  },
+  "knowledge_progression": {
+    "tutorial_sequence": [
+      "deontic_framework_understanding",
+      "epistemic_framework_understanding",
+      "launch_code_epistemic",
+      "ship_operation"
+    ],
+    "key_unlocks": {
+      "quantum_stabilization_ability": {
+        "description": "Allows stabilization of quantum texts",
+        "unlocks_entries": [
+          "attlerock.embedded_narratives",
+          "attlerock.enacting_stories",
+          "brittle_hollow.majora_comparison"
+        ]
+      },
+      "jenkins_framework": {
+        "description": "Understanding of environmental storytelling architectures",
+        "unlocks_location": "quantum_moon"
+      },
+      "time_loop_understanding": {
+        "description": "Comprehension of temporal mechanics"
+      }
+    }
+  },
+  "supernova_config": {
+    "actions_until_supernova": 22,
+    "warning_at_action": 18,
+    "knowledge_persists": true,
+    "physical_state_resets": true
+  }
+}

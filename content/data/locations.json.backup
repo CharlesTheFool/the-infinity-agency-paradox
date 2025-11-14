@@ -1,0 +1,299 @@
+{
+  "locations": {
+    "timber_hearth": {
+      "name": "Timber Hearth Village",
+      "emoji": "🏠",
+      "description": "Your home planet. The Observatory looms on the hillside, and your ship rests near the village center.",
+      "always_accessible": true,
+      "entries": {
+        "deontic_critique": {
+          "title": "Deontic Agency Critique",
+          "type": "wall_text",
+          "format": "academic",
+          "quantum": false,
+          "content": "will_populate_from_act1",
+          "knowledge_grants": ["deontic_framework_understanding"],
+          "adds_to_log": true
+        },
+        "epistemic_intro": {
+          "title": "Epistemic Framework Introduction",
+          "type": "wall_text",
+          "format": "academic",
+          "quantum": false,
+          "content": "will_populate_from_act1",
+          "knowledge_grants": ["epistemic_framework_understanding"],
+          "adds_to_log": true
+        },
+        "launch_code_discovery": {
+          "title": "Launch Code Discovery",
+          "type": "audio_log",
+          "format": "conversational",
+          "quantum": false,
+          "content": "will_populate_observatory_log",
+          "knowledge_grants": ["launch_code_epistemic"],
+          "adds_to_log": true
+        },
+        "ship_access_tutorial": {
+          "title": "Ship Access Tutorial",
+          "type": "interface",
+          "format": "system",
+          "quantum": false,
+          "requires_knowledge": ["launch_code_epistemic"],
+          "content": "ship_console_interface",
+          "knowledge_grants": ["ship_operation"],
+          "adds_to_log": true
+        }
+      }
+    },
+    "attlerock": {
+      "name": "The Attlerock",
+      "emoji": "🌑",
+      "description": "Timber Hearth's moon. Ancient Nomai ruins cover its surface, with quantum texts flickering in and out of existence.",
+      "always_accessible": false,
+      "requires_knowledge": ["ship_operation"],
+      "entries": {
+        "jenkins_overview": {
+          "title": "Jenkins' Four Architectures",
+          "type": "wall_text",
+          "format": "academic",
+          "quantum": false,
+          "content": "will_populate_from_act4",
+          "knowledge_grants": ["jenkins_framework", "frequency_2847"],
+          "adds_to_log": true
+        },
+        "quantum_stabilization": {
+          "title": "Quantum Stabilization Technique",
+          "type": "audio_log",
+          "format": "conversational",
+          "quantum": false,
+          "content": "researcher_rivik_log",
+          "knowledge_grants": ["quantum_stabilization_ability"],
+          "adds_to_log": true,
+          "is_key_unlock": true
+        },
+        "evocative_spaces": {
+          "title": "Evocative Spaces Analysis",
+          "type": "wall_text",
+          "format": "academic",
+          "quantum": false,
+          "content": "will_populate_from_act4",
+          "knowledge_grants": ["evocative_spaces_understanding"],
+          "adds_to_log": true
+        },
+        "embedded_narratives": {
+          "title": "Embedded Narratives Theory",
+          "type": "wall_text",
+          "format": "academic",
+          "quantum": true,
+          "requires_knowledge": ["quantum_stabilization_ability"],
+          "content": "will_populate_from_act4",
+          "knowledge_grants": ["embedded_narratives_understanding"],
+          "adds_to_log": true
+        },
+        "outer_wilds_examples": {
+          "title": "Outer Wilds Environmental Examples",
+          "type": "audio_log",
+          "format": "conversational",
+          "quantum": false,
+          "content": "will_populate_from_act4",
+          "knowledge_grants": ["environmental_examples"],
+          "adds_to_log": true
+        },
+        "enacting_stories": {
+          "title": "Enacting Stories Discussion",
+          "type": "wall_text",
+          "format": "academic",
+          "quantum": true,
+          "requires_knowledge": ["quantum_stabilization_ability"],
+          "content": "will_populate_from_act4",
+          "knowledge_grants": ["enacting_stories_understanding"],
+          "adds_to_log": true
+        },
+        "emergent_narratives": {
+          "title": "Emergent Narratives Analysis",
+          "type": "wall_text",
+          "format": "academic",
+          "quantum": false,
+          "content": "will_populate_from_act4",
+          "knowledge_grants": ["emergent_narratives_understanding"],
+          "adds_to_log": true
+        },
+        "frequency_codes": {
+          "title": "Frequency Codes",
+          "type": "wall_text",
+          "format": "technical",
+          "quantum": true,
+          "requires_knowledge": ["quantum_stabilization_ability"],
+          "content": "frequency_marker_inscriptions",
+          "knowledge_grants": ["frequency_3291"],
+          "adds_to_log": true
+        }
+      }
+    },
+    "brittle_hollow": {
+      "name": "Brittle Hollow",
+      "emoji": "⚫",
+      "description": "A fractured planet crumbling into a black hole. The Nomai's quantum tower pierces the sky, surrounded by time loop research.",
+      "always_accessible": false,
+      "requires_knowledge": ["ship_operation"],
+      "entries": {
+        "time_loop_intro": {
+          "title": "Time Loop Mechanics",
+          "type": "wall_text",
+          "format": "academic",
+          "quantum": false,
+          "content": "will_populate_from_act3",
+          "knowledge_grants": ["time_loop_understanding"],
+          "adds_to_log": true
+        },
+        "knowledge_persistence": {
+          "title": "Knowledge Persistence Analysis",
+          "type": "wall_text",
+          "format": "academic",
+          "quantum": false,
+          "content": "will_populate_from_act3",
+          "knowledge_grants": ["persistence_theory"],
+          "adds_to_log": true
+        },
+        "majora_comparison": {
+          "title": "Majora's Mask Comparison",
+          "type": "audio_log",
+          "format": "conversational",
+          "quantum": true,
+          "requires_knowledge": ["quantum_stabilization_ability"],
+          "content": "will_populate_from_act3",
+          "knowledge_grants": ["majora_analysis"],
+          "adds_to_log": true
+        },
+        "signal_tower": {
+          "title": "Signal Tower Frequencies",
+          "type": "interface",
+          "format": "system",
+          "quantum": false,
+          "requires_knowledge": ["frequency_2847"],
+          "content": "signal_tower_interface",
+          "knowledge_grants": ["signal_tower_access"],
+          "adds_to_log": true
+        },
+        "returnal_deathloop": {
+          "title": "Returnal/Deathloop Discussion",
+          "type": "audio_log",
+          "format": "conversational",
+          "quantum": true,
+          "requires_knowledge": ["quantum_stabilization_ability", "time_loop_understanding"],
+          "content": "will_populate_from_act3",
+          "knowledge_grants": ["roguelike_loop_analysis"],
+          "adds_to_log": true
+        },
+        "advanced_temporal": {
+          "title": "Advanced Temporal Theory",
+          "type": "wall_text",
+          "format": "academic",
+          "quantum": true,
+          "requires_knowledge": ["quantum_stabilization_ability", "persistence_theory"],
+          "content": "will_populate_from_act3",
+          "knowledge_grants": ["advanced_temporal_understanding"],
+          "adds_to_log": true
+        }
+      }
+    },
+    "quantum_moon": {
+      "name": "The Quantum Moon",
+      "emoji": "🌙",
+      "description": "A moon that exists in superposition across six locations. Solanum waits in her grove at the Eye's quantum reflection.",
+      "always_accessible": false,
+      "requires_knowledge": ["quantum_stabilization_ability", "jenkins_framework"],
+      "requires_exploration_percentage": 0.75,
+      "entries": {
+        "solanum_location": {
+          "title": "Solanum's Grove",
+          "type": "location_discovery",
+          "format": "environmental",
+          "quantum": false,
+          "content": "quantum_moon_arrival",
+          "knowledge_grants": ["solanum_discovered"],
+          "adds_to_log": true
+        },
+        "environmental_dialogue": {
+          "title": "Environmental Storytelling Discussion",
+          "type": "dialogue",
+          "format": "synthesis",
+          "quantum": false,
+          "requires_knowledge": ["jenkins_framework"],
+          "content": "solanum_environmental_topic",
+          "knowledge_grants": ["environmental_synthesis"],
+          "adds_to_log": true
+        },
+        "timeloop_dialogue": {
+          "title": "Time Loop Philosophy",
+          "type": "dialogue",
+          "format": "synthesis",
+          "quantum": false,
+          "requires_knowledge": ["time_loop_understanding"],
+          "content": "solanum_timeloop_topic",
+          "knowledge_grants": ["temporal_synthesis"],
+          "adds_to_log": true
+        },
+        "guidance_dialogue": {
+          "title": "Guidance Systems & Epistemic Breadcrumbs",
+          "type": "dialogue",
+          "format": "synthesis",
+          "quantum": false,
+          "requires_knowledge": ["quantum_stabilization_ability", "jenkins_framework", "time_loop_understanding"],
+          "requires_dialogue_count": 2,
+          "content": "will_populate_from_act5",
+          "knowledge_grants": ["guidance_synthesis"],
+          "adds_to_log": true
+        },
+        "thesis_ending": {
+          "title": "Thesis Synthesis & The End",
+          "type": "ending",
+          "format": "emotional",
+          "quantum": false,
+          "requires_knowledge": ["environmental_synthesis", "temporal_synthesis", "guidance_synthesis"],
+          "requires_exploration_percentage": 0.9,
+          "content": "will_populate_from_coda",
+          "knowledge_grants": ["complete_understanding"],
+          "adds_to_log": true,
+          "triggers_ending": true
+        }
+      }
+    }
+  },
+  "knowledge_progression": {
+    "tutorial_sequence": [
+      "deontic_framework_understanding",
+      "epistemic_framework_understanding",
+      "launch_code_epistemic",
+      "ship_operation"
+    ],
+    "key_unlocks": {
+      "quantum_stabilization_ability": {
+        "description": "Allows stabilization of quantum texts",
+        "unlocks_entries": [
+          "attlerock.embedded_narratives",
+          "attlerock.enacting_stories",
+          "attlerock.frequency_codes",
+          "brittle_hollow.majora_comparison",
+          "brittle_hollow.returnal_deathloop",
+          "brittle_hollow.advanced_temporal"
+        ]
+      },
+      "jenkins_framework": {
+        "description": "Understanding of environmental storytelling architectures",
+        "unlocks_location": "quantum_moon",
+        "unlocks_dialogue": "solanum.environmental_dialogue"
+      },
+      "time_loop_understanding": {
+        "description": "Comprehension of temporal mechanics",
+        "unlocks_dialogue": "solanum.timeloop_dialogue"
+      }
+    }
+  },
+  "supernova_config": {
+    "visits_until_supernova": 4,
+    "warning_at_visit": 3,
+    "knowledge_persists": true,
+    "physical_state_resets": true
+  }
+}
