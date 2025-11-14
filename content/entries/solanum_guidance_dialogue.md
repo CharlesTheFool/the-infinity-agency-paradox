@@ -10,7 +10,7 @@
 
 *She points to your ship's log display.*
 
-**SOLANUM**: "The Rumor Mode system. My people's greatest UI achievement."
+**SOLANUM**: "The Rumor Mode system. My people's greatest UI achievement. Goated."
 
 ---
 
@@ -89,9 +89,7 @@ You're drawn to mysteries, not commanded to solve them in sequence. This preserv
 
 The '???' markers in your ship's log are invitations, not obligations. Unanswered questions become opportunities rather than requirements. Unexplored areas remain choices, not mandates.
 
-The game respects your priorities. Want to chase the quantum mysteries? Valid. Want to understand the time loop first? Also valid. Want to explore Dark Bramble before anything else? Dangerous, but valid!
-
-Extra Credits' pacing framework usually requires authored control over content timing. Our system inverts this: pacing is explorer-controlled. Speedrunners complete in 6 minutes. Methodical investigators take 40+ hours."
+The game respects your priorities. Want to chase the quantum mysteries? Valid. Want to understand the time loop first? Also valid. Want to explore Dark Bramble before anything else? Dangerous, but valid!"
 
 ---
 
@@ -116,24 +114,7 @@ Others discover my existence in final hours. A... profound reunion after graspin
 
 ## The Agency of Not Knowing
 
-**SOLANUM**: "Our solar system makes not knowing feel agentive.
-
-Unanswered questions aren't frustration. they're targets for investigation.
-The ship log's '???' markers aren't failures. they're opportunities.
-
-Traditional games punish not knowing (die to enemy, fail quest).
-
-This solar system makes not knowing the engine of engagement. Every unknown is an adventure waiting to happen, chosen by you based on your curiosity.
-
-That's epistemic agency: control over your journey to understanding."
-
-*She smiles.*
-
-**SOLANUM**: "You felt agency not because you chose outcomes, but because you chose pathways.
-
-The guidance respected that choice. It surfaced possibilities without prescribing sequence.
-
-And that made all the difference."
+**SOLANUM**: "Our solar system makes not knowing feel agentive. You felt agency not because you chose outcomes (those are fixed), but because you chose pathways. The guidance respected that choice. It surfaced possibilities without prescribing sequence."
 
 ---
 

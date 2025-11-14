@@ -112,7 +112,7 @@ class POISystem:
 
         return available
 
-    def move_to_poi(self, poi_id: str) -> Tuple[bool, int, str]:
+    def move_to_poi(self, poi_id: str, cavern_has_collapsed: bool = False) -> Tuple[bool, int, str]:
         """
         Move to a connected POI.
         Returns (success, action_cost, message)
@@ -122,6 +122,16 @@ class POISystem:
 
         if poi_id not in connections:
             return False, 0, f"You can't reach {poi_id} from here."
+
+        # Check if trying to move to collapsed quantum cavern
+        if poi_id == "quantum_cavern" and cavern_has_collapsed:
+            # Get blocked message from POI data
+            loc_data = self.location_data["locations"][self.current_location]
+            pois = loc_data.get("points_of_interest", {})
+            cavern_data = pois.get("quantum_cavern", {})
+            collapse_mechanics = cavern_data.get("collapse_mechanics", {})
+            blocked_msg = collapse_mechanics.get("blocked_message", "The quantum cavern is inaccessible.")
+            return False, 0, blocked_msg
 
         # Get distance (action cost)
         distance = current_poi_data.get("distance_to", {}).get(poi_id, 1)

@@ -400,23 +400,20 @@ class OuterWildsOrchestrator:
         elif "open eyes" in command_lower and self.eyes_closed:
             if self.eyes_closed_at_location == "convergence":
                 # Opening eyes at convergence → reach the grove!
-                self.console.print("\n[cyan]You open your eyes and see: the weathered stone platform where you began— "
-                                 "and beyond it, impossible but certain, a grove of quantum trees that exists "
+                self.console.print("\n[cyan]You open your eyes and see: the weathered stone platform where you began "
+                                 "And beyond it, impossible but certain, a grove of quantum trees that exists "
                                  "only because you walked this path.[/cyan]\n")
                 time.sleep(2)
 
                 # Show grove arrival sequence
                 self.console.print("\n" + "━" * 60 + "\n", style="bold magenta")
                 self.console.print("THE QUANTUM WAVEFORM STABILIZES\n", style="bold magenta")
-                self.console.print("You step through into impossible space...\n\n", style="cyan")
                 time.sleep(2)
 
-                self.console.print("A grove materializes around you. Quantum trees shimmer with light", style="white")
-                self.console.print("that shouldn't exist. At the center, a figure waits patiently.\n", style="white")
+                self.console.print("A grove materializes around you. At the center, a figure waits patiently.", style="white")
                 time.sleep(2)
 
                 self.console.print("Solanum turns toward you, existing and not existing,", style="dim italic")
-                self.console.print("quantum superposition made manifest.\n", style="dim italic")
                 time.sleep(2)
 
                 self.console.print("\n" + "━" * 60 + "\n", style="bold magenta")
@@ -563,7 +560,10 @@ class OuterWildsOrchestrator:
             return
 
         # Move to POI
-        success, cost, message = self.poi_system.move_to_poi(matching_poi['id'])
+        success, cost, message = self.poi_system.move_to_poi(
+            matching_poi['id'],
+            cavern_has_collapsed=self.loop_manager.cavern_has_collapsed
+        )
 
         if success:
             self.console.print(f"\n[cyan]{message}[/cyan]\n")
@@ -577,6 +577,10 @@ class OuterWildsOrchestrator:
                 not self.observatory_tutorial_shown and
                 "hornfels" in self.poi_system.get_current_poi_data().get("npcs", [])):
                 self._trigger_observatory_tutorial()
+        else:
+            # Movement failed - show reason (e.g., cavern collapsed)
+            self.console.print(f"\n[yellow]{message}[/yellow]\n")
+            time.sleep(0.5)
 
     def _handle_cardinal_navigation(self, direction: str):
         """Handle Quantum Moon cardinal direction navigation"""
@@ -1109,5 +1113,10 @@ class OuterWildsOrchestrator:
         if required_knowledge:
             if not self.knowledge_menu.progress.has_all_knowledge(required_knowledge):
                 return False, "Missing required knowledge"
+
+        # SPECIAL: Quantum Moon requires frequency entry THIS LOOP (physical state)
+        if location_id == "quantum_moon":
+            if not self.quantum_frequency_entered:
+                return False, "Frequency not entered this loop"
 
         return True, ""

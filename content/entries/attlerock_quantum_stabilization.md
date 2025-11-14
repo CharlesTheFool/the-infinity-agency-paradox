@@ -16,7 +16,7 @@
 
 *[Sound of quantum text shifting]*
 
-"Each quantum state displays a unique symbol. ⟁, ⧈, ◊, ∞, ◈... But only ONE symbol is the encryption key."
+"Each quantum state displays a unique symbol: ⟁, ?, ⧈, ◊, ∞, ◈... But only ONE symbol is the encryption key."
 
 *[Pause to breath]*
 

@@ -110,7 +110,7 @@
           "importance": "critical",
           "short_desc": "Instructions for navigating the Quantum Moon",
           "appears_after": ["quantum_moon_mentioned"],
-          "key_info": "I: Crystals (E) → II: Tree (W) → III: Arch (N) → IV: Footsteps (S) → V: Close Eyes"
+          "key_info": "Start → I: Crystals (East) → II: Tree (W) → III: Arch (N) → IV: Footsteps (S) → V: Close Eyes"
         }
       }
     },
@@ -373,7 +373,7 @@
           "format": "emotional",
           "quantum": false,
           "requires_knowledge": ["guidance_synthesis"],
-          "requires_exploration_percentage": 0.9,
+          "requires_exploration_percentage": 0.75,
           "knowledge_grants": ["complete_understanding"],
           "adds_to_log": true,
           "triggers_ending": true,
