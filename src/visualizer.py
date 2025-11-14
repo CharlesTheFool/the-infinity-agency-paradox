@@ -286,7 +286,7 @@ You chose: [cyan]{choice}[/cyan]
 But the Nomai died 280,000 years ago.
 Nothing you chose could change this outcome.
 
-[bold]This is DEONTIC AGENCY[/bold] — choosing actions with the
+[bold]This is DEONTIC AGENCY[/bold] : choosing actions with the
 illusion of affecting outcomes.
 
 Notice how constrained that felt?

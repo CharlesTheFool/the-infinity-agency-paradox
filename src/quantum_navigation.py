@@ -69,7 +69,7 @@ class QuantumNavigator:
                 "description": "You've reached a point of perfect quantum coherence. The air thrums with potential, all possibilities converging toward a single inevitable truth. The grove exists here, waiting for observation to collapse it into reality.",
                 "stable_path": {},  # No cardinal directions lead anywhere
                 "observations": {
-                    "east": "To the EAST: All directions show the same shimmering potential—the grove exists everywhere and nowhere until you choose to observe it.",
+                    "east": "To the EAST: All directions show the same potential. The grove exists everywhere and nowhere until you choose to observe it.",
                     "west": "To the WEST: The boundaries between cardinal directions blur into quantum superposition, space itself awaiting your final choice.",
                     "north": "To the NORTH: Space itself seems to anticipate your decision, probability waves focused on this singular convergent point.",
                     "south": "To the SOUTH: Every direction leads to the same destination, once you choose to observe it beyond the limitations of sight."

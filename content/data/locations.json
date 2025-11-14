@@ -372,14 +372,14 @@
           "type": "ending",
           "format": "emotional",
           "quantum": false,
-          "requires_knowledge": ["guidance_synthesis"],
-          "requires_exploration_percentage": 0.75,
+          "requires_knowledge": [],
+          "requires_exploration_percentage": 0,
           "knowledge_grants": ["complete_understanding"],
           "adds_to_log": true,
           "triggers_ending": true,
           "importance": "critical",
           "short_desc": "Final synthesis, thesis completion",
-          "appears_after": ["solanum_discovered"]
+          "appears_after": []
         }
       }
     }
